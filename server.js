@@ -187,6 +187,8 @@ app.get('/', (req, res) => {
 				res.redirect('/');
 			}
 			else {
+				row['size'] = fs.statSync('./files/' + row['path'] + '/' + row['filename'])['size'];
+				row['deleted'] = row['timestamp'] + __AVAILABLE_TIME__;
 				res.render('download.ejs', { 'data': row });
 			}
 		}
