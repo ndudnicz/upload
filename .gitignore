@@ -1,0 +1,5 @@
+files/*
+db/uploads.db
+db/banned.db
+db/users.db
+node_modules/*

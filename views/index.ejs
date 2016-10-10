@@ -1,0 +1,10 @@
+<% if (n < 1024) { %>
+<form action="/upload" method="post" encType="multipart/form-data">
+  <input type="file" name="file">
+  <input type="submit" value="Upload">
+</form>
+<p>2 MB max.</p>
+<p><%= n %> / 1024</p>
+<% } else { %>
+	<p>FULL</p>
+<% } %>
