@@ -55,10 +55,7 @@ app.get('/', (req, res) => {
 	var path = md5(filename + new Date().getTime());
 	var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
 
-	console.log(req.headers['x-forwarded-for']);
-	console.log(req.headers['X-Real-IP']);
-	console.log(req.connection.remoteAddress);
-	console.log(req.ip);
+	console.log(req.headers);
 
 	Files.add(path, filename, ip, res, req);
 })
