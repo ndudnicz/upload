@@ -61,12 +61,11 @@ app.get('/', (req, res) => {
 })
 .get('/admin', (req, res) => {
 	var Admin = require('./models/admin.js');
-
 	var callbackTrue = (res) => {
 		var sqlite3 = require('sqlite3');
 		var dbFiles = new sqlite3.Database('db/uploads.db');
 
-		dbFiles.all("SELECT * FROM uploads WHERE reported = 1;", (err, row) => {
+		dbFiles.all("SELECT * FROM uploads;", (err, row) => {
 			if (err || typeof row === 'undefined') {
 				res.render('admin.ejs', { reported: [] })
 			}
@@ -75,7 +74,6 @@ app.get('/', (req, res) => {
 			}
 		});
 	}
-
 	var callbackFalse = (res) => {
 		res.render('admin_non_log.ejs')
 	}

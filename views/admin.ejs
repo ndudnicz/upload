@@ -1,10 +1,23 @@
 <title>Admin</title>
 <p>Reported:</p>
 <% reported.forEach((item) => { %>
-	<p>
-		[<%= item.ip %>][<%= new Date(item.timestamp).toLocaleDateString() %> <%= new Date(item.timestamp).toLocaleTimeString() %>]
+	<% if (item.reported === 1) { %>
+		[<%= item.ip %>][<%= new Date(item.timestamp).toLocaleDateString() %>
+		<%= new Date(item.timestamp).toLocaleTimeString() %>]
+		[<%= item.path %>]
 		<a href="/unreport/<%= item.path %>"><button>Nope</button></a>
 		<a href="/delete/<%= item.path %>"><button>Delete upload</button></a>
 		<a href="/<%= item.path %>"><%= item.filename %></a>
-	</p>
+		<br />
+	<% } %>
+<% }); %>
+<p>All:</p>
+<% reported.forEach((item) => { %>
+	[<%= item.ip %>][<%= new Date(item.timestamp).toLocaleDateString() %>
+	<%= new Date(item.timestamp).toLocaleTimeString() %>]
+	[<%= item.path %>]
+	<a href="/unreport/<%= item.path %>"><button>Nope</button></a>
+	<a href="/delete/<%= item.path %>"><button>Delete upload</button></a>
+	<a href="/<%= item.path %>"><%= item.filename %></a>
+	<br />
 <% }); %>
