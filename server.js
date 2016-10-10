@@ -57,6 +57,7 @@ app.get('/', (req, res) => {
 
 	console.log(req.headers['x-forwarded-for']);
 	console.log(req.connection.remoteAddress);
+	console.log(req.ip);
 
 	Files.add(path, filename, ip, res, req);
 })
