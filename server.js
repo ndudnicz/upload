@@ -56,6 +56,7 @@ app.get('/', (req, res) => {
 	var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
 
 	console.log(req.headers['x-forwarded-for']);
+	console.log(req.headers['X-Real-IP']);
 	console.log(req.connection.remoteAddress);
 	console.log(req.ip);
 
