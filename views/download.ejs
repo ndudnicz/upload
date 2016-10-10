@@ -8,6 +8,6 @@ else if (data['size'] < 1000000) { %>
 else { %>
 	<p><%= (data['size'] / 1000000).toString().substr(0, 4) %> MB</p>
 <% } %>
-<p>Available until: <%= new Date(data['deleted']).toLocaleDateString() %> <%= new Date(data['deleted']).toLocaleTimeString() %></p>
+<p>Time left: <%= parseInt(data['deleted'] / 3600) + 'h' + parseInt((data['deleted'] % 3600) / 60) + 'min' %></p>
 <a href="/download/<%= data['path'] %>">Download</a>
 <a href="/report/<%= data['path'] %>">Report</a>

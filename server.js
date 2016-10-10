@@ -186,7 +186,7 @@ app.get('/', (req, res) => {
 			}
 			else {
 				row['size'] = fs.statSync('./files/' + row['path'] + '/' + row['filename'])['size'];
-				row['deleted'] = row['timestamp'] + __AVAILABLE_TIME__;
+				row['deleted'] = (__AVAILABLE_TIME__ - (new Date().getTime() - row['timestamp'])) / 1000;
 				res.render('download.ejs', { 'data': row });
 			}
 		}
