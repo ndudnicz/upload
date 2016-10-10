@@ -21,6 +21,8 @@ app.use(session({
 	saveUninitialized: false
 }));
 
+app.set('view engine', 'ejs');
+
 app.get('/', (req, res) => {
 	var sqlite3 = require('sqlite3');
 	var dbFiles = new sqlite3.Database('./db/uploads.db');
