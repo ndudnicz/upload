@@ -53,7 +53,10 @@ app.get('/', (req, res) => {
 	var Files = require('./models/files.js');
 	var filename = req.files.file.name;
 	var path = md5(filename + new Date().getTime());
-        var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+	var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+
+	console.log(req.headers['x-forwarded-for']);
+	console.log(req.connection.remoteAddress);
 
 	Files.add(path, filename, ip, res, req);
 })
