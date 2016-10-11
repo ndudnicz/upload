@@ -57,6 +57,7 @@ class Banned {
 		var dbBanned = new sqlite3.Database('db/banned.db');
 
 		dbBanned.run("DELETE FROM banned WHERE ip = ?;", ip, (err) => {
+			console.log('unban');
 			if (err) {
 				console.error(err);
 			}

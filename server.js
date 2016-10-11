@@ -56,21 +56,43 @@ app.get('/', (req, res) => {
 	var Banned = require('./models/banned.js');
 	var data = {
 		'ip': ip,
-		'req': req
+		'req': req,
+		'path': req.body.perso
 	}
 	var callbackTrue = (res, data) => {
 		var Files = require('./models/files.js');
 		var filename = data['req'].files.file.name;
-		var md5 = require('md5');
-		var path = md5(filename + new Date().getTime());
+		var sqlite3 = require('sqlite3');
+		var dbFiles = new sqlite3.Database('db/uploads.db');
 
-		Files.add(path, filename, data['ip'], res, data['req']);
+		dbFiles.get("SELECT * FROM uploads WHERE path = ?;", data['path'], (err, row) => {
+			if (err) {
+				res.redirect('/');
+				return console.error(err);
+			}
+			else if (typeof row === 'undefined' &&
+					data['path'] &&
+					(/^[a-zA-Z0-9\-_]+$/).test(data['path']) &&
+					data['path'].length >= 3 && data['path'].length <= 50) {
+				var path = data['path'];
+			}
+			else {
+				var md5 = require('md5');
+				var path = md5(filename + new Date().getTime());
+			}
+			Files.add(path, filename, data['ip'], res, data['req']);
+		});
 	}
 	var callbackFalse = (res) => {
 		res.redirect('/');
 	}
 
-	Banned.checkBanned(res, data, callbackTrue, callbackFalse);
+	if (req.files.file.name) {
+		Banned.checkBanned(res, data, callbackTrue, callbackFalse);
+	}
+	else {
+		res.redirect('/');
+	}
 })
 .get('/admin', (req, res) => {
 	var Admin = require('./models/admin.js');
@@ -216,12 +238,14 @@ app.get('/', (req, res) => {
 	var Admin = require('./models/admin.js');
 	var Banned = require('./models/banned.js');
 	var callbackTrue = (res, data) => {
+		console.log('true');
 		var Banned = require('./models/banned.js');
 
 		Banned.unban(data);
 		res.redirect('/admin');
 	};
 	var callbackFalse = (res) => {
+		console.log('false');
 		res.redirect('/');
 	}
 	Admin.checkToken(req, res, ip, callbackTrue, callbackFalse);

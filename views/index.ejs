@@ -2,6 +2,9 @@
 <% if (n < 1024) { %>
 <form action="/upload" method="post" encType="multipart/form-data">
   <input type="file" name="file">
+  <br>
+  <label>url: www.plus42.fr/</label><input type="text" name="perso" placeholder="your-url"> (3-50 char: a..zA..Z0..9-_)
+  <br>
   <input type="submit" value="Upload">
 </form>
 <p>2 MB max.</p>
