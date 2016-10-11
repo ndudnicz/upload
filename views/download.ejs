@@ -4,15 +4,15 @@
 
 <div id="container">
 <a href="/">Home</a>
-<p><%= data['filename'] %></p>
+<p>File: <%= data['filename'] %></p>
 <% if (data['size'] < 1000) { %>
-	<p><%= data['size'] %> B</p>
+	<p>Size: <%= data['size'] %> B</p>
 <% }
 else if (data['size'] < 1000000) { %>
-	<p><%= parseInt(data['size'] / 1000) %> KB</p>
+	<p>Size: <%= parseInt(data['size'] / 1000) %> KB</p>
 <% }
 else { %>
-	<p><%= (data['size'] / 1000000).toString().substr(0, 4) %> MB</p>
+	<p>Size: <%= (data['size'] / 1000000).toString().substr(0, 4) %> MB</p>
 <% } %>
 <p>Time left: <%= parseInt(data['deleted'] / 3600) + 'h' + parseInt((data['deleted'] % 3600) / 60) + 'min' %></p>
 <a href="/download/<%= data['path'] %>"><button class="btn btn-default">Download</button></a>
