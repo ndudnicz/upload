@@ -16,12 +16,13 @@
 	[<%= item.ip %>][<%= new Date(item.timestamp).toLocaleDateString() %>
 	<%= new Date(item.timestamp).toLocaleTimeString() %>]
 	[<a href="/<%= item.path %>"><%= item.path %></a>]
-	<a href="/unreport/<%= item.path %>"><button>Nope</button></a>
 	<a href="/delete/<%= item.path %>"><button>Delete upload</button></a>
 	<a href="/<%= item.path %>"><%= item.filename %></a>
 	<br />
 <% }); %>
 <p>Banned:</p>
 <% banned.forEach((item) => { %>
-	<%= item.ip %><a href="/unban/<%= item.ip %>"><button>Unban</button></a>
+	<%= item.ip %>
+	<a href="/unban/<%= item.ip %>"><button>Unban</button></a>
+	<br />
 <% }); %>

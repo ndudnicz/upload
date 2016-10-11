@@ -52,12 +52,25 @@ app.get('/', (req, res) => {
 	});
 })
 .post('/upload', (req, res) => {
-	var Files = require('./models/files.js');
-	var filename = req.files.file.name;
-	var path = md5(filename + new Date().getTime());
 	var ip = req.headers['x-real-ip'];
+	var Banned = require('./models/banned.js');
+	var data = {
+		'ip': ip,
+		'req': req
+	}
+	var callbackTrue = (res, data) => {
+		var Files = require('./models/files.js');
+		var filename = data['req'].files.file.name;
+		var md5 = require('md5');
+		var path = md5(filename + new Date().getTime());
 
-	Files.add(path, filename, ip, res, req);
+		Files.add(path, filename, data['ip'], res, data['req']);
+	}
+	var callbackFalse = (res) => {
+		res.redirect('/');
+	}
+
+	Banned.checkBanned(res, data, callbackTrue, callbackFalse);
 })
 .get('/admin', (req, res) => {
 	var Admin = require('./models/admin.js');

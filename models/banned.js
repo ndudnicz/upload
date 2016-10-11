@@ -62,6 +62,24 @@ class Banned {
 			}
 		});
 	}
+
+	static checkBanned(res, data, callbackTrue, callbackFalse) {
+		var sqlite3 = require('sqlite3');
+		var dbBanned = new sqlite3.Database('db/banned.db');
+
+		dbBanned.get("SELECT * FROM banned WHERE ip = ?;", ip, (err, row) => {
+			if (err) {
+				callbackFalse(res)
+				return console.error(err);
+			}
+			else if (typeof row === 'undefined') {
+				callbackTrue(res, data);
+			}
+			else {
+				callbackFalse(res)
+			}
+		});
+	}
 }
 
 module.exports = Banned;
