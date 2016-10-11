@@ -21,3 +21,7 @@
 	<a href="/<%= item.path %>"><%= item.filename %></a>
 	<br />
 <% }); %>
+<p>Banned:</p>
+<% banned.forEach((item) => { %>
+	<%= item.ip %><a href="/unban/<%= item.ip %>"><button>Unban</button></a>
+<% }); %>

@@ -25,6 +25,7 @@ class Banned {
 
 		dbBanned.run("INSERT INTO banned VALUES (NULL, ?, ?);", [ip, timestamp], (err) => {
 			if (err) {
+				console.error(err);
 			}
 		});
 	}
@@ -44,8 +45,20 @@ class Banned {
 					var Files = require('./files.js');
 					Files.del(path, res, redir);
 					if (err) {
+						console.error(err);
 					}
 				});
+			}
+		});
+	}
+
+	static unban(ip) {
+		var sqlite3 = require('sqlite3');
+		var dbBanned = new sqlite3.Database('db/banned.db');
+
+		dbBanned.run("DELETE FROM banned WHERE ip = ?;", ip, (err) => {
+			if (err) {
+				console.error(err);
 			}
 		});
 	}

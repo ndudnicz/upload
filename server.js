@@ -64,14 +64,20 @@ app.get('/', (req, res) => {
 	var callbackTrue = (res) => {
 		var sqlite3 = require('sqlite3');
 		var dbFiles = new sqlite3.Database('db/uploads.db');
+		var dbBanned = new sqlite3.Database('db/banned.db');
 
 		dbFiles.all("SELECT * FROM uploads;", (err, row) => {
 			if (err || typeof row === 'undefined') {
-				res.render('admin.ejs', { reported: [] })
+				row = [];
+				console.error(err);
 			}
-			else {
-				res.render('admin.ejs', { reported: row })
-			}
+			dbBanned.all("SELECT * FROM banned;", (err, banned) => {
+				if (err || typeof banned === 'undefined') {
+					banned = [];
+					console.error(err);
+				}
+				res.render('admin.ejs', { 'reported': row, 'banned': banned })
+			});
 		});
 	}
 	var callbackFalse = (res) => {
@@ -191,6 +197,21 @@ app.get('/', (req, res) => {
 			}
 		}
 	});
+})
+.get('/unban/:ip', (req, res) => {
+	var ip = req.params.ip;
+	var Admin = require('./models/admin.js');
+	var Banned = require('./models/banned.js');
+	var callbackTrue = (res, data) => {
+		var Banned = require('./models/banned.js');
+
+		Banned.unban(data);
+		res.redirect('/admin');
+	};
+	var callbackFalse = (res) => {
+		res.redirect('/');
+	}
+	Admin.checkToken(req, res, ip, callbackTrue, callbackFalse);
 });
 
 app.use((req, res, next) => {
