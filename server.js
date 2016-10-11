@@ -64,6 +64,16 @@ app.get('/', (req, res) => {
 		var filename = data['req'].files.file.name;
 		var sqlite3 = require('sqlite3');
 		var dbFiles = new sqlite3.Database('db/uploads.db');
+		var forbiddenUrl = [
+			'admin',
+			'upload',
+			'ban',
+			'report',
+			'unreport',
+			'delete',
+			'download',
+			'unban'
+		];
 
 		dbFiles.get("SELECT * FROM uploads WHERE path = ?;", data['path'], (err, row) => {
 			if (err) {
@@ -73,7 +83,8 @@ app.get('/', (req, res) => {
 			else if (typeof row === 'undefined' &&
 					data['path'] &&
 					(/^[a-zA-Z0-9\-_]+$/).test(data['path']) &&
-					data['path'].length >= 3 && data['path'].length <= 50) {
+					data['path'].length >= 3 && data['path'].length <= 50 &&
+					forbiddenUrl.indexOf(data['path']) === -1) {
 				var path = data['path'];
 			}
 			else {
