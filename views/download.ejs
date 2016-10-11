@@ -1,4 +1,9 @@
 <title>Download</title>
+
+<link rel="stylesheet" type="text/css" href="css/download.css">
+
+<div id="container">
+<a href="/">Home</a>
 <p><%= data['filename'] %></p>
 <% if (data['size'] < 1000) { %>
 	<p><%= data['size'] %> B</p>
@@ -10,5 +15,6 @@ else { %>
 	<p><%= (data['size'] / 1000000).toString().substr(0, 4) %> MB</p>
 <% } %>
 <p>Time left: <%= parseInt(data['deleted'] / 3600) + 'h' + parseInt((data['deleted'] % 3600) / 60) + 'min' %></p>
-<a href="/download/<%= data['path'] %>">Download</a>
-<a href="/report/<%= data['path'] %>">Report</a>
+<a href="/download/<%= data['path'] %>"><button class="btn btn-default">Download</button></a>
+<a href="/report/<%= data['path'] %>"><button class="btn btn-default">Report</button></a>
+</div>
