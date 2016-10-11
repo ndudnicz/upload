@@ -72,7 +72,8 @@ app.get('/', (req, res) => {
 			'unreport',
 			'delete',
 			'download',
-			'unban'
+			'unban',
+			'setup'
 		];
 
 		dbFiles.get("SELECT * FROM uploads WHERE path = ?;", data['path'], (err, row) => {
