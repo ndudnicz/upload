@@ -67,7 +67,7 @@ class Banned {
 		var sqlite3 = require('sqlite3');
 		var dbBanned = new sqlite3.Database('db/banned.db');
 
-		dbBanned.get("SELECT * FROM banned WHERE ip = ?;", ip, (err, row) => {
+		dbBanned.get("SELECT * FROM banned WHERE ip = ?;", data['ip'], (err, row) => {
 			if (err) {
 				callbackFalse(res)
 				return console.error(err);
