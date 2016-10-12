@@ -193,8 +193,8 @@ app.get('/', (req, res) => {
 /*.get('/setup', (req, res) => {
 	var Db = require('./db/setup.js');
 
-	Db.uploads(null);
-	Db.banned(null);
+//	Db.uploads(null);
+//	Db.banned(null);
 	Db.users(res);
 })*/
 .get('/download/:id', (req, res) => {
