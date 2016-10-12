@@ -19,7 +19,14 @@
 		</tr>
 		<tr>
 			<td class="td-left-index" style="text-align: right;">www.plus42.fr/</td>
-			<td><input type="text" name="perso" placeholder="your-url" id="input-url" onkeyup="checkUrl();"> <span style="font-size: 12px;">(3-50 char: a..zA..Z0..9-_)</span></td>
+			<td><input type="text" name="perso" placeholder="your-url" id="input-url" onkeyup="checkUrl();"></td>
+			<td>
+				<img id="checkurl" src="" width="25px" style="visibility: hidden;">
+			</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td><span style="font-size: 12px;">(3-50 char: a..zA..Z0..9-_)</span></td>
 		</tr>
 	</table>
 	<div class="form-group">
@@ -54,16 +61,20 @@
 			req.onreadystatechange = function (ret) {
 				if (req.readyState == 4) {
 					if(req.status == 200)
-						if (req.responseText === 'true')
-							document.getElementById('input-url').style.backgroundColor = "greenyellow";
-						else
-							document.getElementById('input-url').style.backgroundColor = "tomato";
+						if (req.responseText === 'true') {
+							document.getElementById('checkurl').src = 'images/true.png';
+							document.getElementById('checkurl').style.visibility = "visible";
+						}
+						else {
+							document.getElementById('checkurl').src = 'images/false.png';
+							document.getElementById('checkurl').style.visibility = "visible";
+						}
 				}
 			};
 			req.send("url=" + url);
 		}
 		else {
-			document.getElementById('input-url').style.backgroundColor = "white";
+			document.getElementById('checkurl').style.visibility = "hidden";
 		}
 	}
 </script>

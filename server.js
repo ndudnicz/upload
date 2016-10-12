@@ -30,7 +30,6 @@ app.get('/', (req, res) => {
 	var dbFiles = new sqlite3.Database('./db/uploads.db');
 	var Files = require('./models/files.js');
 	var timeNow = new Date().getTime();
-
 	dbFiles.all("SELECT * FROM uploads;", (err, row) => {
 		if (err) {
 			console.error(err);
@@ -77,7 +76,6 @@ app.get('/', (req, res) => {
 			'unban',
 			'setup'
 		];
-
 		dbFiles.get("SELECT * FROM uploads WHERE path = ?;", data['path'], (err, row) => {
 			if (err) {
 				res.redirect('/');
@@ -100,7 +98,6 @@ app.get('/', (req, res) => {
 	var callbackFalse = (res) => {
 		res.redirect('/');
 	}
-
 	if (req.files.file.name) {
 		Banned.checkBanned(res, data, callbackTrue, callbackFalse);
 	}
@@ -114,7 +111,6 @@ app.get('/', (req, res) => {
 		var sqlite3 = require('sqlite3');
 		var dbFiles = new sqlite3.Database('db/uploads.db');
 		var dbBanned = new sqlite3.Database('db/banned.db');
-
 		dbFiles.all("SELECT * FROM uploads;", (err, row) => {
 			if (err || typeof row === 'undefined') {
 				row = [];
@@ -132,7 +128,6 @@ app.get('/', (req, res) => {
 	var callbackFalse = (res) => {
 		res.render('admin_non_log.ejs')
 	}
-
 	Admin.checkToken(req, res, null, callbackTrue, callbackFalse);
 })
 .post('/admin', (req, res) => {
@@ -140,7 +135,6 @@ app.get('/', (req, res) => {
 	var dbUsers = new sqlite3.Database('db/users.db');
 	var bcrypt = require('bcrypt');
 	var Admin = require('./models/admin.js');
-
 	dbUsers.get("SELECT * FROM users WHERE login = ?;",
 	req.body.login,
 	(err, row) => {
@@ -163,7 +157,6 @@ app.get('/', (req, res) => {
 	var callbackTrue = (res) => {
 		var sqlite3 = require('sqlite3');
 		var dbFiles = new sqlite3.Database('db/uploads.db');
-
 		dbFiles.run("UPDATE uploads SET reported = 0 WHERE path = ?;", req.params.id, (err) => {
 			if (err) {
 				console.error(err);
@@ -174,7 +167,6 @@ app.get('/', (req, res) => {
 	var callbackFalse = (res) => {
 		res.redirect('/');
 	}
-
 	Admin.checkToken(req, res, null, callbackTrue, callbackFalse);
 })
 .get('/delete/:id', (req, res) => {
@@ -187,7 +179,6 @@ app.get('/', (req, res) => {
 	var callbackFalse = (res) => {
 		res.redirect('/');
 	}
-
 	Admin.checkToken(req, res, req.params.id, callbackTrue, callbackFalse);
 })
 /*.get('/setup', (req, res) => {
@@ -201,7 +192,6 @@ app.get('/', (req, res) => {
 	var Files = require('./models/files.js');
 	var sqlite3 = require('sqlite3');
 	var db = new sqlite3.Database('db/uploads.db');
-
 	db.get("SELECT * FROM uploads WHERE path = ?;", req.params.id, (err, row) => {
 		if (err || typeof row === "undefined") {
 			res.redirect('/');
@@ -221,7 +211,6 @@ app.get('/', (req, res) => {
 .get('/report/:id', (req, res) => {
 	var Files = require('./models/files.js');
 	var Banned = require('./models/banned.js');
-
 	Files.report(req.params.id);
 	res.render('report.ejs');
 })
@@ -229,20 +218,20 @@ app.get('/', (req, res) => {
 	var Files = require('./models/files.js');
 	var sqlite3 = require('sqlite3');
 	var db = new sqlite3.Database('db/uploads.db');
-
 	db.get("SELECT * FROM uploads WHERE path = ?;", req.params.id, (err, row) => {
-		if (err || typeof row === "undefined") {
+		if (err || typeof row === 'undefined') {
 			res.redirect('/');
+			//console.error(err);
 		}
 		else {
 			if (new Date().getTime() - row['timestamp'] > __AVAILABLE_TIME__) {
 				Files.del(req.params.id);
-				res.redirect('/');
+				return res.redirect('/');
 			}
 			else {
 				row['size'] = fs.statSync('./files/' + row['path'] + '/' + row['filename'])['size'];
 				row['deleted'] = (__AVAILABLE_TIME__ - (new Date().getTime() - row['timestamp'])) / 1000;
-				res.render('download.ejs', { 'data': row });
+				return res.render('download.ejs', { 'data': row });
 			}
 		}
 	});
