@@ -70,7 +70,7 @@ exports.users = function(res) {
 			else {
 				var bcrypt = require('bcrypt');
 				var salt = bcrypt.genSaltSync(10);
-				var hash = bcrypt.hashSync('55105510', salt);
+				//var hash = bcrypt.hashSync('', salt);
 
 				dbUsers.run("INSERT INTO users VALUES (?, ?, ?, ?);",
 				[
