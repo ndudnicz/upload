@@ -4,14 +4,24 @@
 
 <div id="container">
 <% if (n < 1024) { %>
-2 MB max.
 <form action="/upload" method="post" encType="multipart/form-data">
-		<label id="label-file" for="file">
-			<input type="file" name="file" id="file">
-		</label>
-	<div>
-		www.plus42.fr/<input type="text" name="perso" placeholder="your-url"> (3-50 char: a..zA..Z0..9-_)
-	</div>
+<input type="file" name="file" id="file" style="visibility: hidden;" onchange="toto();">
+	<table>
+		<tr>
+			<td class="td-left-index">
+				<label id="label-file" for="file">
+					<span class="btn btn-select-file">
+						Select file
+					</span>
+				</label>
+			</td>
+			<td><span id="selectedFile">No file selected</span></td>
+		</tr>
+		<tr>
+			<td class="td-left-index" style="text-align: right;">www.plus42.fr/</td>
+			<td><input type="text" name="perso" placeholder="your-url" id="input-url"> <span style="font-size: 12px;">(3-50 char: a..zA..Z0..9-_)</span></td>
+		</tr>
+	</table>
 	<div class="form-group">
 		<ul>
 			<li>2MB / file.</li>
@@ -25,3 +35,11 @@
 	<p>FULL</p>
 <% } %>
 </div>
+
+<script>
+	function toto() {
+		var input = document.getElementById('file').value.split('\\');
+		var filename = input[input.length - 1];
+		document.getElementById('selectedFile').innerHTML = filename;
+	}
+</script>

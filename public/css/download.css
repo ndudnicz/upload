@@ -5,6 +5,11 @@
 	overflow: auto;
 }
 
+
+ .td-left {
+	min-width: 70px;
+ }
+
 .btn {
   background: #e0e0e0;
   background-image: -webkit-linear-gradient(top, #e0e0e0, #5e5e5e);

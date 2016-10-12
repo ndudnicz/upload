@@ -1,20 +1,33 @@
 <title>Download</title>
 
-<link rel="stylesheet" type="text/css" href="css/download.css">
+<link rel="stylesheet" type="text/css" href="css/index.css">
 
 <div id="container">
-<a href="/">Home</a>
-<p>File: <%= data['filename'] %></p>
-<% if (data['size'] < 1000) { %>
-	<p>Size: <%= data['size'] %> B</p>
-<% }
-else if (data['size'] < 1000000) { %>
-	<p>Size: <%= parseInt(data['size'] / 1000) %> KB</p>
-<% }
-else { %>
-	<p>Size: <%= (data['size'] / 1000000).toString().substr(0, 4) %> MB</p>
-<% } %>
-<p>Time left: <%= parseInt(data['deleted'] / 3600) + 'h' + parseInt((data['deleted'] % 3600) / 60) + 'min' %></p>
+	<a href="/">Home</a>
+	<table>
+		<tr>
+			<td class="td-left-download">File:</td>
+			<td><%= data['filename'] %></td>
+		</tr>
+		<tr>
+			<td class="td-left-download">Size:</td>
+			<td>
+				<% if (data['size'] < 1000) { %>
+					<%= data['size'] %> B
+				<% }
+				else if (data['size'] < 1000000) { %>
+					<%= parseInt(data['size'] / 1000) %> KB
+				<% }
+				else { %>
+					<%= (data['size'] / 1000000).toString().substr(0, 4) %> MB
+				<% } %>
+			</td>
+		</tr>
+		<tr>
+			<td class="td-left-download">Time left:</td>
+			<td><%= parseInt(data['deleted'] / 3600) + 'h' + parseInt((data['deleted'] % 3600) / 60) + 'min' %></td>
+		</tr>
+	</table>
 <a href="/download/<%= data['path'] %>"><button class="btn btn-default">Download</button></a>
 <a href="/report/<%= data['path'] %>"><button class="btn btn-default">Report</button></a>
 </div>

@@ -1,13 +1,18 @@
+body {
+	background-color: rgb(34, 34, 34);
+	color: white;
+	font-family: sans-serif;
+	font-weight: lighter;
+}
+
 #container {
 	width: 500px;
 	margin: auto;
-	padding: 20px;
-	border: 1px solid black;
-	border-radius: 5px;
+	margin-top: 70px;
+	overflow: auto;
 }
 
  .form-group {
-	border: 1px solid black;
 	border-radius: 5px;
 	margin: 10px 0px 0px 0px;
  }
@@ -31,12 +36,7 @@ ul {
 }
 
 .btn {
-  background: #e0e0e0;
-  background-image: -webkit-linear-gradient(top, #e0e0e0, #5e5e5e);
-  background-image: -moz-linear-gradient(top, #e0e0e0, #5e5e5e);
-  background-image: -ms-linear-gradient(top, #e0e0e0, #5e5e5e);
-  background-image: -o-linear-gradient(top, #e0e0e0, #5e5e5e);
-  background-image: linear-gradient(to bottom, #e0e0e0, #5e5e5e);
+  background: #a8a8a8;
   -webkit-border-radius: 6;
   -moz-border-radius: 6;
   border-radius: 6px;
@@ -51,55 +51,42 @@ ul {
   -ms-user-select: none;
   user-select: none;
  cursor: pointer;
+ border: none;
 }
 
 .btn:hover {
-  background: #878787;
-  background-image: -webkit-linear-gradient(top, #878787, #000000);
-  background-image: -moz-linear-gradient(top, #878787, #000000);
-  background-image: -ms-linear-gradient(top, #878787, #000000);
-  background-image: -o-linear-gradient(top, #878787, #000000);
-  background-image: linear-gradient(to bottom, #878787, #000000);
+  background: #808080;
   text-decoration: none;
   outline: none;
 }
-/*
- .btn {
-    display: inline-block;
-    padding: 6px 12px;
-    margin-bottom: 0;
-    font-size: 14px;
-    font-weight: normal;
-    line-height: 1.42857143;
-    text-align: center;
-    white-space: nowrap;
-    vertical-align: middle;
-    cursor: pointer;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    background-image: none;
-    border: 1px solid transparent;
-    border-radius: 4px;
+
+.btn-select-file {
+	font-size: 20px;
+	width: 100%;
+	height: 100%;
 }
- .btn-success {
-    color: #fff;
-    background-color: #5cb85c;
-    border-color: #4cae4c;
+
+#label-file {
+	width: 100%;
 }
- .fileinput-button {
-    position: relative;
-    overflow: hidden;
+
+a, a:hover, a:visited {
+	color: inherit;
 }
- .fileinput-button input {
-    position: absolute;
-    top: 0;
-    right: 0;
-    margin: 0;
-    opacity: 0;
-    -ms-filter:'alpha(opacity=0)';
-    font-size: 200px;
-    direction: ltr;
-    cursor: pointer;
-}*/
+
+td {
+}
+
+.td-left-index {
+	min-width: 150px;
+	height: 40px;
+	text-align: center;
+}
+
+.td-left-download {
+   min-width: 70px;
+}
+
+#input-url {
+	font-size: 15px;
+}
