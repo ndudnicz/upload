@@ -85,7 +85,7 @@ app.get('/', (req, res) => {
 			}
 			else if (typeof row === 'undefined' &&
 					data['path'] &&
-					(/^[a-zA-Z0-9\-_]+$/).test(data['path']) &&
+					(/^[a-zA-Z0-9\-_]+$/).test(data['path']) === true &&
 					data['path'].length >= 3 && data['path'].length <= 50 &&
 					forbiddenUrl.indexOf(data['path']) === -1) {
 				var path = data['path'];
@@ -263,6 +263,26 @@ app.get('/', (req, res) => {
 		res.redirect('/');
 	}
 	Admin.checkToken(req, res, ip, callbackTrue, callbackFalse);
+})
+.post('/checkurl', (req, res) => {
+	var sqlite3 = require('sqlite3');
+	var dbFiles = new sqlite3.Database('db/uploads.db');
+	var url = req.body.url;
+
+	if (url && (/^[a-zA-Z0-9\-_]+$/).test(url) === true) {
+		dbFiles.get("SELECT * FROM uploads WHERE path = ?;", url, (err, row) => {
+			if (err) {
+				res.send(false);
+				return console.error(err);
+			}
+			else if (typeof row !== 'undefined')
+				res.send(false);
+			else
+				res.send(true);
+		});
+	}
+	else
+		res.send(false);
 });
 
 app.use((req, res, next) => {
