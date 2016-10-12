@@ -258,7 +258,7 @@ app.get('/', (req, res) => {
 	var dbFiles = new sqlite3.Database('db/uploads.db');
 	var url = req.body.url;
 
-	if (url && (/^[a-zA-Z0-9\-_]+$/).test(url) === true) {
+	if (url && (/^[a-zA-Z0-9\-_]+$/).test(url) === true && url.length >= 3 && url.length <= 50) {
 		dbFiles.get("SELECT * FROM uploads WHERE path = ?;", url, (err, row) => {
 			if (err) {
 				res.send(false);
