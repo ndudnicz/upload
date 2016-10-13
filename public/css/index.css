@@ -96,7 +96,7 @@ a, a:hover, a:visited {
 
 @media screen and (max-device-width: 500px) {
 	#container {
-		width: 300px;
+		width: 330px;
 		margin: auto;
 		margin-top: 30px;
 		overflow: auto;
@@ -109,7 +109,7 @@ a, a:hover, a:visited {
 	}
 
 	.btn {
-		padding: 5px 5px 5px 5px;
+		padding: 6px 12px 6px 12px;
 		font-size: 30px;
 
 	}
@@ -119,15 +119,24 @@ a, a:hover, a:visited {
 	}
 
 	.btn-download {
-		padding: 5px 10px 5px 10px;
-		margin-left: 8px;
+		padding: 5px 8px 5px 8px;
+		margin-left: 10px;
+		width: 45%;
 	}
 
 	input {
-		max-width: 150px;
+		max-width: 160px;
 	}
 
 	ul {
 		font-size: 12px;
+	}
+
+	table {
+		overflow: hidden;
+	}
+
+	td {
+		max-width: 170px;
 	}
 }
