@@ -93,6 +93,10 @@ a, a:hover, a:visited {
 		overflow: auto;
 	}
 
+	table {
+		overflow: auto;
+	}
+
 	td {
 		max-width: 170px;
 	}
