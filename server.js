@@ -96,7 +96,7 @@ app.get('/', (req, res) => {
 		});
 	}
 	var callbackFalse = (res) => {
-		res.redirect('/');
+		res.redirect('https://www.youtube.com/watch?v=dQw4w9WgXcQ');
 	}
 	if (req.files.file.name) {
 		Banned.checkBanned(res, data, callbackTrue, callbackFalse);
