@@ -84,7 +84,27 @@ class Files {
 		var sqlite3 = require('sqlite3');
 		var db = new sqlite3.Database('db/uploads.db');
 
-		db.run("UPDATE uploads SET reported = 1 WHERE path = ?;", path);
+		db.get("SELECT * FROM uploads WHERE path = ? AND reported = 0;", path, (err, row) => {
+			if (err)
+				console.error(err);
+			else if (typeof row !== 'undefined') {
+				console.log(path);
+				var sendmail = require('sendmail')();
+				var message = 'Yo nigga, you\'ve got a new report.<br>\
+				Check it out ====><a href="https://www.plus42.fr/' + path + '">Click here !</a><====';
+				sendmail({
+					from: 'admin@plus42.fr',
+					to: 'ndudnicz@protonmail.com',
+					subject: 'Plus42.fr: New report',
+					html: message
+				}, function(err, reply) {
+					console.error(err && err.stack);
+					console.log(reply);
+				});
+
+				db.run("UPDATE uploads SET reported = 1 WHERE path = ?;", path);
+			}
+		});
 	}
 }
 

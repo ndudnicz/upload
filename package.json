@@ -13,6 +13,7 @@
 		"md5": "",
 		"fs-extra": "",
 		"express-session": "",
-		"bcrypt": ""
+		"bcrypt": "",
+		"sendmail": ""
     }
 }
