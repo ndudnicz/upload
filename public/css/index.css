@@ -93,6 +93,10 @@ a, a:hover, a:visited {
 		overflow: auto;
 	}
 
+	input {
+		max-width: 160px;
+	}
+
 	table {
 		overflow: auto;
 	}
