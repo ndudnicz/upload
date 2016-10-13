@@ -22,9 +22,9 @@
 			<td><span id="selectedFile">No file selected</span></td>
 		</tr>
 		<tr>
-			<td class="td-left-index" style="text-align: right;">www.plus42.fr/</td>
+			<td class="td-left-index" style="text-align: right;">plus42.fr/</td>
 			<td><input type="text" name="perso" placeholder="your-url" id="input-url" onkeyup="checkUrl();"></td>
-			<td>
+			<td id="td-checkurl">
 				<img id="checkurl" src="" width="25px" style="visibility: hidden;">
 			</td>
 		</tr>
@@ -33,14 +33,12 @@
 			<td><span style="font-size: 12px;">(3-50 char: a..zA..Z0..9-_)</span></td>
 		</tr>
 	</table>
-	<div class="form-group">
-		<ul>
-			<li>2MB / file</li>
-			<li>24h. available</li>
-			<li><%= n %> / 1024 slot taken</li>
-		</ul>
-		<input id="upload" class="btn" type="submit" value="Upload">
-	</div>
+			<ul>
+				<li>2MB / file</li>
+				<li>24h. available</li>
+				<li><%= n %> / 1024 slot taken</li>
+			</ul>
+			<input id="upload" class="btn" type="submit" value="Upload">
 </form>
 <% } else { %>
 	<p>FULL</p>

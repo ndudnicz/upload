@@ -9,13 +9,6 @@ header {
 	text-align: center;
 }
 
-#container {
-	width: 500px;
-	margin: auto;
-	margin-top: 70px;
-	overflow: auto;
-}
-
  .form-group {
 	border-radius: 5px;
 	margin: 10px 0px 0px 0px;
@@ -49,7 +42,6 @@ ul {
   font-size: 36px;
   padding: 10px 20px 10px 20px;
   text-decoration: none;
-  width: 49%;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -65,9 +57,9 @@ ul {
 }
 
 .btn-select-file {
-	font-size: 18px;
+	font-size: 20px;
 	width: 100%;
-	padding: 5px 10px 5px 10px;
+	height: 100%;
 }
 
 #label-file {
@@ -77,10 +69,6 @@ ul {
 a, a:hover, a:visited {
 	color: inherit;
 	text-decoration: none;
-}
-
-td {
-	max-height: 20px;
 }
 
 .td-left-index {
@@ -95,4 +83,51 @@ td {
 
 #input-url {
 	font-size: 15px;
+}
+
+@media screen and (min-device-width: 500px) {
+	#container {
+		width: 400px;
+		margin: auto;
+		margin-top: 70px;
+		overflow: auto;
+	}
+}
+
+@media screen and (max-device-width: 500px) {
+	#container {
+		width: 300px;
+		margin: auto;
+		margin-top: 30px;
+		overflow: auto;
+	}
+
+	.td-left-index {
+		min-width: 110px;
+		height: 40px;
+		text-align: center;
+	}
+
+	.btn {
+		padding: 5px 5px 5px 5px;
+		font-size: 30px;
+
+	}
+	.btn-select-file {
+		padding: 5px 5px 5px 5px;
+		font-size: 18px;
+	}
+
+	.btn-download {
+		padding: 5px 10px 5px 10px;
+		margin-left: 8px;
+	}
+
+	input {
+		max-width: 150px;
+	}
+
+	ul {
+		font-size: 12px;
+	}
 }

@@ -35,6 +35,6 @@
 			<td><%= parseInt(data['deleted'] / 3600) + 'h' + parseInt((data['deleted'] % 3600) / 60) + 'min' %></td>
 		</tr>
 	</table>
-<a href="/download/<%= data['path'] %>"><button class="btn btn-default">Download</button></a>
-<a href="/report/<%= data['path'] %>"><button class="btn btn-default">Report</button></a>
+<a href="/download/<%= data['path'] %>"><button class="btn btn-download">Download</button></a>
+<a href="/report/<%= data['path'] %>"><button class="btn btn-download">Report</button></a>
 </div>
