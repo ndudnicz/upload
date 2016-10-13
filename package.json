@@ -5,15 +5,15 @@
     "repository": ".",
     "license": "MIT",
     "dependencies": {
-		"express": "",
-		"ejs": "",
-		"body-parser": "",
-		"sqlite3": "",
-		"express-fileupload": "",
-		"md5": "",
-		"fs-extra": "",
-		"express-session": "",
-		"bcrypt": "",
-		"sendmail": ""
+		"express": "^4.14.0",
+		"ejs": "^2.5.2",
+		"body-parser": "^1.15.2",
+		"sqlite3": "^3.1.6",
+		"express-fileupload": "^0.0.5",
+		"md5": "^2.2.1",
+		"fs-extra": "^0.30.0",
+		"express-session": "^1.14.1",
+		"bcrypt": "^0.8.7",
+		"sendmail": "^1.0.0"
     }
 }
