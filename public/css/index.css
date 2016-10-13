@@ -141,7 +141,7 @@ a, a:hover, a:visited {
 	}
 
 	table {
-		overflow: hidden;
+		overflow: auto;
 	}
 
 	td {
