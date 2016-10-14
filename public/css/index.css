@@ -91,10 +91,6 @@ a, a:hover, a:visited {
    min-width: 70px;
 }
 
-#input-url {
-	font-size: 15px;
-}
-
 #input-link {
 	width: 98%;
 	font-size: 15px;
@@ -135,6 +131,11 @@ td {
 		position: relative;
 		left: -17px;
 	}
+
+	#input-url {
+		width: 174px;
+		font-size: 15px;
+	}
 }
 
 @media screen and (max-device-width: 500px) {
@@ -160,8 +161,9 @@ td {
 		font-size: 18px;
 	}
 
-	input {
-		max-width: 160px;
+	#input-url {
+		width: 162px;
+		font-size: 15px;
 	}
 
 	ul {
