@@ -116,22 +116,9 @@ td {
 		overflow: auto;
 	}
 
-<<<<<<< HEAD
 	#td-checkurl {
 		position: relative;
 		left: -17px;
-=======
-	input {
-		max-width: 160px;
-	}
-
-	table {
-		overflow: auto;
-	}
-
-	td {
-		max-width: 170px;
->>>>>>> fab3f92b4c9e3c8d7eca303808aa65246e9ce35d
 	}
 }
 
