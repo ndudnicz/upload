@@ -98,6 +98,19 @@ table {
 
 td {
 	max-width: 170px;
+
+#qrcode-div {
+	width: 159px;
+	height: 159px;
+	margin: auto;
+	margin-top: 30px;
+	overflow: hidden;
+}
+
+#qrcode-img {
+	position: relative;
+	top: -9px;
+	left: -9px;
 }
 
 #qrcode-div {
