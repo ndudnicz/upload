@@ -62,6 +62,11 @@ ul {
 	height: 100%;
 }
 
+.btn-download {
+	padding: 5px 8px 5px 8px;
+	width: 49%;
+}
+
 #label-file {
 	width: 100%;
 }
@@ -93,6 +98,7 @@ table {
 
 td {
 	max-width: 170px;
+}
 
 #qrcode-div {
 	width: 159px;
@@ -144,11 +150,6 @@ td {
 	.btn-select-file {
 		padding: 5px 5px 5px 5px;
 		font-size: 18px;
-	}
-
-	.btn-download {
-		padding: 5px 8px 5px 8px;
-		width: 49%;
 	}
 
 	input {
