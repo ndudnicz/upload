@@ -34,6 +34,10 @@
 			<td class="td-left-download td-download">Time left:</td>
 			<td class="td-download"><%= parseInt(data['deleted'] / 3600) + 'h' + parseInt((data['deleted'] % 3600) / 60) + 'min' %></td>
 		</tr>
+		<tr>
+			<td>Link:</td>
+			<td><input type="text" id="input-link" onfocus="this.select();" value="https://www.plus42.fr/<%= data['path'] %>"></td>
+		</tr>
 	</table>
 	<a href="/download/<%= data['path'] %>"><button class="btn btn-download">Download</button></a>
 	<a href="/report/<%= data['path'] %>"><button class="btn btn-download">Report</button></a>
