@@ -85,6 +85,16 @@ a, a:hover, a:visited {
 	font-size: 15px;
 }
 
+table {
+	width: 100%;
+	overflow: auto;
+	margin-bottom: 20px;
+}
+
+td {
+	max-width: 170px;
+}
+
 @media screen and (min-device-width: 500px) {
 	#container {
 		width: 400px;
@@ -93,12 +103,9 @@ a, a:hover, a:visited {
 		overflow: auto;
 	}
 
-	table {
-		overflow: auto;
-	}
-
-	td {
-		max-width: 170px;
+	#td-checkurl {
+		position: relative;
+		left: -17px;
 	}
 }
 
@@ -128,8 +135,7 @@ a, a:hover, a:visited {
 
 	.btn-download {
 		padding: 5px 8px 5px 8px;
-		margin-left: 10px;
-		width: 45%;
+		width: 49%;
 	}
 
 	input {
@@ -140,11 +146,8 @@ a, a:hover, a:visited {
 		font-size: 12px;
 	}
 
-	table {
-		overflow: auto;
-	}
-
-	td {
-		max-width: 170px;
+	#td-checkurl {
+		position: relative;
+		left: -10px;
 	}
 }

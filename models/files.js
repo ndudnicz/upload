@@ -1,6 +1,7 @@
 "use strict";
 
 class Files {
+
 	constructor() {
 	}
 
@@ -14,15 +15,15 @@ class Files {
 	}
 
 	static add(path, filename, ip, res, req) {
+		var __N_FILES__ = 500;												/*N_FILE MAX HERE*/
 		var sqlite3 = require('sqlite3');
 		var db = new sqlite3.Database('db/uploads.db');
 		var fs = require('fs');
-
 		db.all("SELECT * FROM uploads;", (err, row) => {
 			if (err) {
 				console.error(err);
 			}
-			if (row.length < 1024) {
+			if (row.length < __N_FILES__) {
 				fs.mkdir('./files/' + path, () => {
 					req.files.file.mv('./files/' + path + '/' + filename, (err) => {
 						if (err) {

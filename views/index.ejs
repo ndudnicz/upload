@@ -7,7 +7,7 @@
 <link rel="stylesheet" type="text/css" href="css/index.css">
 
 <div id="container">
-<% if (n < 1024) { %>
+<% if (n < 500) { %>
 <form action="/upload" method="post" encType="multipart/form-data">
 <input type="file" name="file" id="file" style="visibility: hidden;" onchange="toto();">
 	<table>
@@ -34,9 +34,8 @@
 		</tr>
 	</table>
 			<ul>
-				<li>2MB / file</li>
+				<li>10MB / file</li>
 				<li>24h. available</li>
-				<li><%= n %> / 1024 slot taken</li>
 			</ul>
 			<input id="upload" class="btn" type="submit" value="Upload">
 </form>

@@ -1,5 +1,5 @@
 __AVAILABLE_TIME__ = 1000 * 3600 * 24;
-__FILE_SIZE__ = 2 * 1024 * 1024;
+__FILE_SIZE__ = 10 * 1024 * 1024;
 
 var express = require('express');
 var app = express();
@@ -39,7 +39,6 @@ app.get('/', (req, res) => {
 		}
 		else {
 			var n = 0;
-
 			row.forEach((item) => {
 				if (timeNow - item['timestamp'] > __AVAILABLE_TIME__) {
 					Files.del(item['path']);
