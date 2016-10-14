@@ -93,6 +93,19 @@ table {
 
 td {
 	max-width: 170px;
+
+#qrcode-div {
+	width: 159px;
+	height: 159px;
+	margin: auto;
+	margin-top: 30px;
+	overflow: hidden;
+}
+
+#qrcode-img {
+	position: relative;
+	top: -9px;
+	left: -9px;
 }
 
 @media screen and (min-device-width: 500px) {
@@ -103,9 +116,22 @@ td {
 		overflow: auto;
 	}
 
+<<<<<<< HEAD
 	#td-checkurl {
 		position: relative;
 		left: -17px;
+=======
+	input {
+		max-width: 160px;
+	}
+
+	table {
+		overflow: auto;
+	}
+
+	td {
+		max-width: 170px;
+>>>>>>> fab3f92b4c9e3c8d7eca303808aa65246e9ce35d
 	}
 }
 

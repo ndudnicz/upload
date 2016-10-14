@@ -35,6 +35,7 @@
 			<td class="td-download"><%= parseInt(data['deleted'] / 3600) + 'h' + parseInt((data['deleted'] % 3600) / 60) + 'min' %></td>
 		</tr>
 	</table>
-<a href="/download/<%= data['path'] %>"><button class="btn btn-download">Download</button></a>
-<a href="/report/<%= data['path'] %>"><button class="btn btn-download">Report</button></a>
+	<a href="/download/<%= data['path'] %>"><button class="btn btn-download">Download</button></a>
+	<a href="/report/<%= data['path'] %>"><button class="btn btn-download">Report</button></a>
+	<div id="qrcode-div"><img id="qrcode-img" alt="Qrcode" src="https://chart.googleapis.com/chart?cht=qr&chs=177x177&chl=https://www.plus42.fr/<%= data['path'] %>&chld=L"></div>
 </div>
