@@ -9,10 +9,15 @@ header {
 	text-align: center;
 }
 
- .form-group {
-	border-radius: 5px;
-	margin: 10px 0px 0px 0px;
- }
+#illuminati-img {
+	width: 100px;
+	height: 100px;
+	margin: auto;
+}
+
+#header-download {
+	margin-bottom: 40px;
+}
 
 #file {
 	font-size: 20px;
@@ -33,7 +38,7 @@ ul {
 }
 
 .btn {
-  background: #a8a8a8;
+  background: #a0a0a0;
   -webkit-border-radius: 6;
   -moz-border-radius: 6;
   border-radius: 6px;
@@ -123,7 +128,6 @@ td {
 	#container {
 		width: 400px;
 		margin: auto;
-		margin-top: 70px;
 		overflow: auto;
 	}
 
@@ -137,7 +141,6 @@ td {
 	#container {
 		width: 330px;
 		margin: auto;
-		margin-top: 30px;
 		overflow: auto;
 	}
 
