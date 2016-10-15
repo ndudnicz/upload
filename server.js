@@ -1,15 +1,32 @@
+/* Config global var */
+
 __AVAILABLE_TIME__ = 1000 * 3600 * 24;
 __FILE_SIZE__ = 10 * 1024 * 1024;
 
-var express = require('express');
-var app = express();
-var fileUpload = require('express-fileupload');
-var md5 = require('md5');
-var fs = require('fs');
-var fsExtra = require('fs-extra');
-var session = require('express-session');
+/* Middlewares */
 
-app.listen(3000);
+var express = require('express'),
+	app = express(),
+	fileUpload = require('express-fileupload'),
+	md5 = require('md5'),
+	fs = require('fs'),
+	fsExtra = require('fs-extra'),
+	session = require('express-session'),
+	bodyParser = require('body-parser');
+
+app.use(bodyParser.json());
+
+/* General error handling: dont show your shit to everyone ! */
+
+app.use((error, req, res, next) => {
+	if (error) {
+		console.error("ERROR");
+		res.sendStatus(404);
+	}
+	else {
+		next();
+	}
+});
 
 app.use(fileUpload({
 	limits: { fileSize: __FILE_SIZE__}
@@ -255,8 +272,7 @@ app.get('/', (req, res) => {
 .post('/checkurl', (req, res) => {
 	var sqlite3 = require('sqlite3');
 	var dbFiles = new sqlite3.Database('db/uploads.db');
-	var url = req.body.url;
-
+	var url = req.body.checkurl;
 	if (url && (/^[a-zA-Z0-9\-_]+$/).test(url) === true && url.length >= 3 && url.length <= 50) {
 		dbFiles.get("SELECT * FROM uploads WHERE path = ?;", url, (err, row) => {
 			if (err) {
@@ -277,3 +293,5 @@ app.use((req, res, next) => {
 	res.setHeader('Content-Type', 'text/html');
 	res.sendStatus(404);
 });
+
+app.listen(3000);
