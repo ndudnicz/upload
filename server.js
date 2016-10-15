@@ -1,5 +1,9 @@
+/* Config global var */
+
 __AVAILABLE_TIME__ = 1000 * 3600 * 24;
 __FILE_SIZE__ = 10 * 1024 * 1024;
+
+/* Middlewares */
 
 var express = require('express'),
 	app = express(),
@@ -11,6 +15,18 @@ var express = require('express'),
 	bodyParser = require('body-parser');
 
 app.use(bodyParser.json());
+
+/* General error handling: dont show your shit to everyone ! */
+
+app.use((error, req, res, next) => {
+	if (error) {
+		console.error("ERROR");
+		res.sendStatus(404);
+	}
+	else {
+		next();
+	}
+});
 
 app.use(fileUpload({
 	limits: { fileSize: __FILE_SIZE__}
