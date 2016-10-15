@@ -89,7 +89,6 @@ class Files {
 			if (err)
 				console.error(err);
 			else if (typeof row !== 'undefined') {
-				console.log(path);
 				var sendmail = require('sendmail')();
 				var message = 'Yo nigga, you\'ve got a new report.<br>\
 				Check it out ====><a href="https://www.plus42.fr/' + path + '">Click here !</a><====';
