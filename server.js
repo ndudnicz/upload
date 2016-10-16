@@ -196,14 +196,14 @@ app.get('/', (req, res) => {
 	}
 	Admin.checkToken(req, res, req.params.id, callbackTrue, callbackFalse);
 })
-.get('/setup', (req, res) => {
+/*.get('/setup', (req, res) => {
 	var Db = require('./db/setup.js');
 
 //	Db.uploads(null);
 //	Db.banned(null);
 //	Db.users(res);
 	Db.modify(res);
-})
+})*/
 .get('/download/:id', (req, res) => {
 	var Files = require('./models/files.js');
 	var sqlite3 = require('sqlite3');
