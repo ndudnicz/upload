@@ -41,7 +41,7 @@ ul {
   background: #a0a0a0;
   -webkit-border-radius: 6;
   -moz-border-radius: 6;
-  border-radius: 6px;
+  border-radius: 1px;
   font-family: Arial;
   color: #ffffff;
   font-size: 36px;
@@ -132,6 +132,10 @@ td {
 		left: -17px;
 	}
 
+	.btn {
+		padding: 6px 15px 6px 15px;
+	}
+
 	#input-url {
 		width: 174px;
 		font-size: 15px;
@@ -154,11 +158,11 @@ td {
 	.btn {
 		padding: 6px 12px 6px 12px;
 		font-size: 30px;
-
 	}
+
 	.btn-select-file {
 		padding: 5px 5px 5px 5px;
-		font-size: 18px;
+		font-size: 20px;
 	}
 
 	#input-url {
