@@ -14,6 +14,19 @@ var express = require('express'),
 	session = require('express-session'),
 	bodyParser = require('body-parser');
 
+	forbiddenUrl = [
+		'admin',
+		'upload',
+		'ban',
+		'report',
+		'unreport',
+		'delete',
+		'download',
+		'unban',
+		'setup'
+	];
+
+
 app.use(bodyParser.json());
 
 /* General error handling: dont show your shit to everyone ! */
@@ -81,17 +94,6 @@ app.get('/', (req, res) => {
 		var filename = data['req'].files.file.name;
 		var sqlite3 = require('sqlite3');
 		var dbFiles = new sqlite3.Database('db/uploads.db');
-		var forbiddenUrl = [
-			'admin',
-			'upload',
-			'ban',
-			'report',
-			'unreport',
-			'delete',
-			'download',
-			'unban',
-			'setup'
-		];
 		dbFiles.get("SELECT * FROM uploads WHERE path = ?;", data['path'], (err, row) => {
 			if (err) {
 				res.redirect('/');
@@ -277,7 +279,8 @@ app.get('/', (req, res) => {
 	var sqlite3 = require('sqlite3');
 	var dbFiles = new sqlite3.Database('db/uploads.db');
 	var url = req.body.checkurl;
-	if (url && (/^[a-zA-Z0-9\-_]{3,50}$/).test(url) === true) {
+	if (url && (/^[a-zA-Z0-9\-_]{3,50}$/).test(url) === true &&
+		forbiddenUrl.indexOf(url) === -1) {
 		dbFiles.get("SELECT * FROM uploads WHERE path = ?;", url, (err, row) => {
 			if (err) {
 				res.send(false);
