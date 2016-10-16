@@ -32,7 +32,7 @@ class Files {
 						}
 						else {
 							var timestamp = new Date().getTime();
-							var query = db.prepare("INSERT INTO uploads VALUES (?, ?, ?, ?, ?, ?);",
+							var query = db.prepare("INSERT INTO uploads VALUES (?, ?, ?, ?, ?, ?, 0);",
 							[
 								null,
 								path,

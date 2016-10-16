@@ -19,6 +19,7 @@
 <% reported.forEach((item) => { %>
 	[<%= item.ip %>][<%= new Date(item.timestamp).toLocaleDateString() %>
 	<%= new Date(item.timestamp).toLocaleTimeString() %>]
+	[downloaded: <%= item.download_number %>]
 	[<a href="/<%= item.path %>"><%= item.path %></a>]
 	<a href="/delete/<%= item.path %>"><button>Delete upload</button></a>
 	<a href="/<%= item.path %>"><%= item.filename %></a>

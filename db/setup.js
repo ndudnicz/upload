@@ -14,7 +14,8 @@ exports.uploads = function(res) {
 				filename TEXT,\
 				ip TEXT,\
 				reported INTEGER,\
-				timestamp INTEGER);", (err) => {});
+				timestamp INTEGER,\
+				download_number INTEGER DEFAULT 0);", (err) => {});
 		if (res !== null) {
 			res.redirect('/');
 		}
@@ -92,4 +93,20 @@ exports.users = function(res) {
 			return;
 		}
 	});
+}
+
+exports.modify = function(res) {
+	var sqlite3 = require('sqlite3');
+	var db = new sqlite3.Database('db/uploads.db');
+
+	db.run("ALTER TABLE uploads ADD COLUMN download_number INTEGER;", (err) => {
+		if (err)
+			console.error(err);
+	});
+	if (res !== null) {
+		res.redirect('/');
+	}
+	else {
+		return;
+	}
 }
