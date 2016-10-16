@@ -124,7 +124,7 @@ td {
 	#container {
 		width: 400px;
 		margin: auto;
-		overflow: auto;
+		overflow: visible;
 	}
 
 	#td-checkurl {
