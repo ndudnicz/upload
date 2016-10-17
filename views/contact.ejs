@@ -1,0 +1,36 @@
+<head>
+	<% include partial/head.ejs %>
+</head>
+
+<title>Contact - Plus42</title>
+
+<link rel="stylesheet" type="text/css" href="css/index.css">
+
+<% include partial/header.ejs %>
+
+<div id="container">
+	<form action="/contact" method="post" encType="application/x-www-form-urlencoded">
+		<div id="div-contact">
+			<% if (error) { %>
+				<p style="color: tomato;"><%= error %></p>
+			<% } %>
+			<% if (success) { %>
+				<p style="color: lightgreen;"><%= success %></p>
+			<% } %>
+			<input id="email" type="email" name="email" placeholder="email">
+			<textarea id="message" name="message" maxlength="1000" onkeyup="counter(this);"><%= message %></textarea>
+
+			<div data-theme="dark" class="g-recaptcha" data-sitekey="6LfVcgkUAAAAABO1BsQTWiNU3VB2mIsA2YgMIsdr" data-size="normal"></div>
+			<input class="btn btn-contact" type="submit" value="Send">
+			<p>no html. no script. no bullshit. thx. bye.</p>
+			<span id="counter">1000</span>
+		</div>
+	</form>
+</div>
+
+<script src='https://www.google.com/recaptcha/api.js'></script>
+<script>
+	function counter(text) {
+		document.getElementById('counter').innerHTML = 1000 - text.value.length;
+	}
+</script>
