@@ -3,6 +3,7 @@ body {
 	color: white;
 	font-family: sans-serif;
 	font-weight: lighter;
+	height: 90%;
 }
 
 header {
@@ -120,6 +121,39 @@ td {
 	left: -9px;
 }
 
+#div-contact {
+	margin: auto;
+	margin-top: 10px;
+	margin-bottom: -20px;
+	text-align: center;
+}
+
+#email {
+	width: 100%;
+	font-size: 20px;
+}
+
+#message {
+	width: 100%;
+	max-width: 100%;
+	height: 230px;
+	max-height: 250px;
+	font-size: 15px;
+	display: block;
+}
+
+#counter {
+	position: relative;
+	top: -163px;
+	font-size: 12px;
+}
+
+footer {
+	text-align: center;
+	font-size: 14px;
+	margin-top: 30px;
+}
+
 @media screen and (min-device-width: 500px) {
 	#container {
 		width: 400px;
@@ -139,6 +173,15 @@ td {
 	#input-url {
 		width: 174px;
 		font-size: 15px;
+	}
+
+	.btn-contact {
+		font-size: 20px;
+		width: 100%;
+	}
+
+	#div-contact {
+		width: 75%;
 	}
 }
 
@@ -165,6 +208,15 @@ td {
 		font-size: 20px;
 	}
 
+	.btn-contact {
+		font-size: 22px;
+		width: 100%;
+	}
+
+	#email {
+		margin-bottom: 1px;
+	}
+
 	#input-url {
 		width: 162px;
 		font-size: 15px;
@@ -177,5 +229,9 @@ td {
 	#td-checkurl {
 		position: relative;
 		left: -10px;
+	}
+
+	#div-contact {
+		width: 91%;
 	}
 }

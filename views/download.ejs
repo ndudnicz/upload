@@ -6,9 +6,7 @@
 
 <link rel="stylesheet" type="text/css" href="css/index.css">
 
-<header id="header-download">
-	<div id="illuminati"><a href="/"><img id="illuminati-img" src="images/eye2.png" alt="Illuminati"></a></div>
-</header>
+<% include partial/header.ejs %>
 
 <div id="container">
 	<table>
@@ -43,3 +41,5 @@
 	<a href="/report/<%= data['path'] %>"><button class="btn btn-download">Report</button></a>
 	<div id="qrcode-div"><img id="qrcode-img" alt="Qrcode" src="https://chart.googleapis.com/chart?cht=qr&chs=177x177&chl=https://www.plus42.fr/<%= data['path'] %>&chld=L"></div>
 </div>
+
+<% include partial/footer.ejs %>

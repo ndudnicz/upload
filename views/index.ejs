@@ -6,9 +6,7 @@
 
 <link rel="stylesheet" type="text/css" href="css/index.css">
 
-<header>
-	<div id="illuminati"><a href="/"><img id="illuminati-img" src="images/eye2.png" alt="Illuminati"></a></div>
-</header>
+<% include partial/header.ejs %>
 
 <div id="container">
 <% if (n < 500) { %>
@@ -47,6 +45,8 @@
 	<p>FULL</p>
 <% } %>
 </div>
+
+<% include partial/footer.ejs %>
 
 <script>
 	function toto() {

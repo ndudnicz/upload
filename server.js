@@ -12,22 +12,24 @@ var express = require('express'),
 	fs = require('fs'),
 	fsExtra = require('fs-extra'),
 	session = require('express-session'),
-	bodyParser = require('body-parser');
+	bodyParser = require('body-parser'),
 
 	forbiddenUrl = [
-		'admin',
-		'upload',
-		'ban',
-		'report',
-		'unreport',
-		'delete',
-		'download',
-		'unban',
-		'setup'
+		'admin'
+		,'upload'
+		,'ban'
+		,'report'
+		,'unreport'
+		,'delete'
+		,'download'
+		,'unban'
+		,'setup'
+		,'contact'
 	];
-
+	config = JSON.parse(fs.readFileSync('./config.json'));
 
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended : false}));
 
 /* General error handling: dont show your shit to everyone ! */
 
@@ -235,6 +237,50 @@ app.get('/', (req, res) => {
 	var Banned = require('./models/banned.js');
 	Files.report(req.params.id);
 	res.render('report.ejs');
+})
+.get('/contact', (req, res) => {
+	res.render('contact.ejs', { message: "", error: null, success: null });
+})
+.post('/contact', (req, res) => {
+	var regMail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+	if (regMail.test(req.body.email) === true && req.body.message.length > 0 && req.body.message.length <= 1000) {
+		var request = require('request'),
+			secret = config['captchaSecretKey'],
+			captchaResponse = req.body['g-recaptcha-response'],
+			remoteip = req.headers['x-real-ip'],
+			url = 'https://www.google.com/recaptcha/api/siteverify',
+			verifyUrl = url+'?secret='+secret+'&response='+captchaResponse+'&remoteip='+remoteip;
+			htmlspecialchars = require('htmlspecialchars');
+		request(verifyUrl, (error, resonse, body) => {
+			body = JSON.parse(body);
+			if (body.success === true) {
+				var mailSubject = 'Plus42,fr: new message.',
+					mailContent = 'New message from: ' + req.body.email + ' [' + req.headers['x-real-ip'] + ']<br/><br/>' + htmlspecialchars(req.body.message),
+					sendmail = require('sendmail')();
+				sendmail({
+					from: 'admin@plus42.fr'
+					,subject: mailSubject
+					,to: 'ndudnicz@protonmail.com'
+					,html: mailContent
+				}, function(err, reply) {
+					console.error(err && err.stack);
+					console.log(reply);
+				});
+				res.render('contact.ejs', { message: "", error: null, success: "Message sent." });
+			}
+			else {
+				res.render('contact.ejs', { message: req.body.message, error: "Check the captcha.", success: null });
+			}
+		});
+	}
+	else {
+		if (regMail.test(req.body.email) === false) {
+			res.render('contact.ejs', { message: req.body.message.substr(0, 1000), error: "Invalid email.", success: null });
+		}
+		else {
+			res.render('contact.ejs', { message: req.body.message.substr(0, 1000), error: "Invalid message.", success: null });
+		}
+	}
 })
 .get('/:id', (req, res) => {
 	var Files = require('./models/files.js');
