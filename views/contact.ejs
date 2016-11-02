@@ -17,9 +17,8 @@
 			<% if (success) { %>
 				<p style="color: lightgreen;"><%= success %></p>
 			<% } %>
-			<input id="email" type="email" name="email" placeholder="email">
-			<textarea id="message" name="message" maxlength="1000" onkeyup="counter(this);"><%= message %></textarea>
-
+			<input id="email" type="email" name="email" placeholder="Email">
+			<textarea id="message" name="message" maxlength="1000" onkeyup="counter(this);" placeholder="Message"><%= message %></textarea>
 			<div data-theme="dark" class="g-recaptcha" data-sitekey="6LfVcgkUAAAAABO1BsQTWiNU3VB2mIsA2YgMIsdr" data-size="normal"></div>
 			<input class="btn btn-contact" type="submit" value="Send">
 			<p>no html. no script. no bullshit. thx. bye.</p>
