@@ -20,6 +20,10 @@ header {
 	margin-bottom: 40px;
 }
 
+#container {
+	margin: auto;
+}
+
 #file {
 	font-size: 20px;
 	width: 100%;
@@ -149,15 +153,33 @@ td {
 }
 
 footer {
+	margin: auto;
 	text-align: center;
 	font-size: 14px;
 	margin-top: 30px;
 }
 
+footer table {
+	font-size: 12px;
+	width: 286px;
+	margin: auto;
+}
+
+footer td {
+	margin: auto;
+}
+
+#td00, #td02 {
+	width: 15px;
+}
+
+#td01 {
+	width: 240px;
+}
+
 @media screen and (min-device-width: 500px) {
-	#container {
+	#container, footer {
 		width: 400px;
-		margin: auto;
 		overflow: visible;
 	}
 
@@ -186,9 +208,8 @@ footer {
 }
 
 @media screen and (max-device-width: 500px) {
-	#container {
+	#container, footer {
 		width: 330px;
-		margin: auto;
 		overflow: auto;
 	}
 

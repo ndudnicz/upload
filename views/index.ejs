@@ -55,13 +55,10 @@
 		var filename = input[input.length - 1];
 		document.getElementById('selectedFile').innerHTML = filename;
 	}
-
 	function checkUrl() {
 		var url = document.getElementById('input-url').value;
-
 		if (url.length >= 3) {
 			var req = new XMLHttpRequest();
-
 			req.open('POST', '/checkurl', true);
 			req.setRequestHeader("Content-type", "application/json;charset=UTF-8");
 			req.onreadystatechange = function (ret) {
