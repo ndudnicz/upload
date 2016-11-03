@@ -1,5 +1,6 @@
 /* Config global var */
 
+_PORT_ = 3000;
 __AVAILABLE_TIME__ = 1000 * 3600 * 24;
 __FILE_SIZE__ = 10 * 1024 * 1024;
 
@@ -234,7 +235,7 @@ app.get('/', (req, res) => {
 				sendmail({
 					from: 'admin@plus42.fr'
 					,subject: mailSubject
-					,to:config['adminEmail'] 
+					,to:config['adminEmail']
 					,html: mailContent
 				}, function(err, reply) {
 					console.error(err && err.stack);
@@ -315,4 +316,5 @@ app.use((req, res, next) => {
 	res.sendStatus(404);
 });
 
-app.listen(3000);
+app.listen(_PORT_);
+console.log('running on 127.0.0.1:' + _PORT_);
