@@ -229,7 +229,7 @@ app.get('/', (req, res) => {
 		request(verifyUrl, (error, resonse, body) => {
 			body = JSON.parse(body);
 			if (body.success === true) {
-				var mailSubject = 'Plus42,fr: new message.',
+				var mailSubject = 'Plus42.fr: new message.',
 					mailContent = 'New message from: ' + req.body.email + ' [' + req.headers['x-real-ip'] + ']<br/><br/>' + htmlspecialchars(req.body.message),
 					sendmail = require('sendmail')();
 				sendmail({
