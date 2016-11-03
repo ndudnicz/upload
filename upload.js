@@ -20,9 +20,9 @@ var express = require('express')
 	,dbBanned = new sqlite3.Database('db/banned.db')
 	,dbUsers = new sqlite3.Database('db/users.db')
 
-	,Files = require('./models/files.js')
-	,Admin = require('./models/admin.js')
-	,Banned = require('./models/banned.js')
+	,Files = require('./libs/files.js')
+	,Admin = require('./libs/admin.js')
+	,Banned = require('./libs/banned.js')
 
 	,forbiddenUrl = [
 		'admin'
@@ -178,7 +178,7 @@ app.get('/', (req, res) => {
 })
 .get('/delete/:id', (req, res) => {
 	var callbackTrue = (res, data) => {
-		var Banned = require('./models/banned.js');
+		var Banned = require('./libs/banned.js');
 
 		Banned.addFromPath(data, res, '/admin');
 	}
@@ -257,7 +257,7 @@ app.get('/', (req, res) => {
 	}
 })
 .get('/:id', (req, res) => {
-	var Files = require('./models/files.js');
+	var Files = require('./libs/files.js');
 	dbFiles.get("SELECT * FROM uploads WHERE path = ?;", req.params.id, (err, row) => {
 		if (err || typeof row === 'undefined') {
 			res.redirect('/');
@@ -280,7 +280,7 @@ app.get('/', (req, res) => {
 	var ip = req.params.ip;
 	var callbackTrue = (res, data) => {
 		console.log('true');
-		var Banned = require('./models/banned.js');
+		var Banned = require('./libs/banned.js');
 
 		Banned.unban(data);
 		res.redirect('/admin');
