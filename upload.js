@@ -234,7 +234,7 @@ app.get('/', (req, res) => {
 				sendmail({
 					from: 'admin@plus42.fr'
 					,subject: mailSubject
-					,to: 'ndudnicz@protonmail.com'
+					,to:config['adminEmail'] 
 					,html: mailContent
 				}, function(err, reply) {
 					console.error(err && err.stack);
