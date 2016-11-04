@@ -20,7 +20,7 @@
 			<% } %>
 			<input id="email" type="email" name="email" placeholder="Email">
 			<textarea id="message" name="message" maxlength="1000" onkeyup="counter(this);" placeholder="Message"><%= message %></textarea>
-			<div data-theme="dark" class="g-recaptcha" data-sitekey="6LfVcgkUAAAAABO1BsQTWiNU3VB2mIsA2YgMIsdr" data-size="normal"></div>
+			<div data-theme="dark" class="g-recaptcha" data-sitekey="<%= publicKey %>" data-size="normal"></div>
 			<input class="btn btn-contact" type="submit" value="Send">
 			<p>no html. no script. no bullshit. thx. bye.</p>
 			<span id="counter">1000</span>

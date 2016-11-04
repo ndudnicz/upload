@@ -1,9 +1,11 @@
 SETUP:
-- you need a google account for the captcha
+- npm install
 - mkdir files
 - mkdir db
+- you need a google account for the captcha keys
 - touch config.json:
 	{
+		"captchaPublicKey": ""
 		"captchaSecretKey": ""
 		,"adminLogin": ""
 		,"adminPassword": ""
@@ -12,4 +14,5 @@ SETUP:
 	}
 - set a header 'x-real-ip' = 'remote ip' with your reverse proxy server nginx/apache
 - node setup.js
+- delete adminLogin and adminPassword values in config.json
 - node upload.js

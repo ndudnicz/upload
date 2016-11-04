@@ -214,7 +214,7 @@ app.get('/', (req, res) => {
 	res.render('report.ejs');
 })
 .get('/contact', (req, res) => {
-	res.render('contact.ejs', { message: "", error: null, success: null });
+	res.render('contact.ejs', { publicKey: config['captchaPublicKey'], message: "", error: null, success: null });
 })
 .post('/contact', (req, res) => {
 	var regMail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -241,19 +241,19 @@ app.get('/', (req, res) => {
 					console.error(err && err.stack);
 					console.log(reply);
 				});
-				res.render('contact.ejs', { message: "", error: null, success: "Message sent." });
+				res.render('contact.ejs', { publicKey: config['captchaPublicKey'], message: "", error: null, success: "Message sent." });
 			}
 			else {
-				res.render('contact.ejs', { message: req.body.message, error: "Check the captcha.", success: null });
+				res.render('contact.ejs', { publicKey: config['captchaPublicKey'], message: req.body.message, error: "Check the captcha.", success: null });
 			}
 		});
 	}
 	else {
 		if (regMail.test(req.body.email) === false) {
-			res.render('contact.ejs', { message: req.body.message.substr(0, 1000), error: "Invalid email.", success: null });
+			res.render('contact.ejs', { publicKey: config['captchaPublicKey'], message: req.body.message.substr(0, 1000), error: "Invalid email.", success: null });
 		}
 		else {
-			res.render('contact.ejs', { message: req.body.message.substr(0, 1000), error: "Invalid message.", success: null });
+			res.render('contact.ejs', { publicKey: config['captchaPublicKey'], message: req.body.message.substr(0, 1000), error: "Invalid message.", success: null });
 		}
 	}
 })
