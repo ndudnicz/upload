@@ -81,7 +81,7 @@ class Files {
 		});
 	}
 
-	static report(path) {
+	static report(path, adminEmail) {
 		var sqlite3 = require('sqlite3');
 		var db = new sqlite3.Database('db/uploads.db');
 
@@ -94,7 +94,7 @@ class Files {
 				Check it out ====><a href="https://www.plus42.fr/' + path + '">Click here !</a><====';
 				sendmail({
 					from: 'admin@plus42.fr',
-					to: 'ndudnicz@protonmail.com',
+					to: adminEmail,
 					subject: 'Plus42.fr: New report',
 					html: message
 				}, function(err, reply) {
