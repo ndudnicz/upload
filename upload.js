@@ -209,7 +209,7 @@ app.get('/', (req, res) => {
 	});
 })
 .get('/report/:id', (req, res) => {
-	Files.report(req.params.id);
+	Files.report(req.params.id, config["adminEmail"]);
 	res.render('report.ejs');
 })
 .get('/contact', (req, res) => {
