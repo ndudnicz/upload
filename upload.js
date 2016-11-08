@@ -1,12 +1,12 @@
 /* Config global var */
 
-_PORT_ = 3000;
-__AVAILABLE_TIME__ = 1000 * 3600 * 24;
-__FILE_SIZE__ = 10 * 1024 * 1024;
+const _PORT_ = 3000
+		,__AVAILABLE_TIME__ = 1000 * 3600 * 24
+		,__FILE_SIZE__ = 10 * 1024 * 1024;
 
 /* Middlewares */
 
-var express = require('express')
+const express = require('express')
 	,app = express()
 	,fileUpload = require('express-fileupload')
 	,md5 = require('md5')
@@ -48,9 +48,8 @@ app.use((error, req, res, next) => {
 		console.error("ERROR");
 		res.sendStatus(404);
 	}
-	else {
+	else
 		next();
-	}
 });
 
 app.use(fileUpload({
@@ -68,7 +67,7 @@ app.use(express.static(__dirname + '/public'));
 app.set('view engine', 'ejs');
 
 app.get('/', (req, res) => {
-	var timeNow = new Date().getTime();
+	let timeNow = new Date().getTime();
 	dbFiles.all("SELECT * FROM uploads;", (err, row) => {
 		if (err) {
 			console.error(err);

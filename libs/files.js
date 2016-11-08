@@ -5,9 +5,10 @@ class Files {
 	constructor() {
 	}
 
+
 	static all() {
-		var sqlite3 = require('sqlite3');
-		var db = new sqlite3.Database('db/uploads.db');
+		const sqlite3 = require('sqlite3')
+				,db = new sqlite3.Database('db/uploads.db');
 
 		db.all("SELECT * FROM uploads", (err, row) => {
 			console.log(row);
@@ -15,10 +16,12 @@ class Files {
 	}
 
 	static add(path, filename, ip, res, req) {
-		var __N_FILES__ = 500;												/*N_FILE MAX HERE*/
-		var sqlite3 = require('sqlite3');
-		var db = new sqlite3.Database('db/uploads.db');
-		var fs = require('fs');
+		 let __N_FILES__ = 500;												/*N_FILE MAX HERE*/
+
+		const sqlite3 = require('sqlite3')
+				,db = new sqlite3.Database('db/uploads.db')
+				,fs = require('fs');
+
 		db.all("SELECT * FROM uploads;", (err, row) => {
 			if (err) {
 				console.error(err);
@@ -31,8 +34,8 @@ class Files {
 							return console.error(err);
 						}
 						else {
-							var timestamp = new Date().getTime();
-							var query = db.prepare("INSERT INTO uploads VALUES (?, ?, ?, ?, ?, ?, 0);",
+							let timestamp = new Date().getTime();
+							let query = db.prepare("INSERT INTO uploads VALUES (?, ?, ?, ?, ?, ?, 0);",
 							[
 								null,
 								path,
@@ -43,9 +46,8 @@ class Files {
 							]);
 
 							query.run((err) => {
-								if (err) {
+								if (err)
 									return console.error(err);
-								}
 								res.redirect('/' + path);
 							});
 							query.finalize();
@@ -53,51 +55,47 @@ class Files {
 					});
 				});
 			}
-			else {
+			else
 				res.redirect('/');
-			}
 		});
 	}
 
 	static del(path, res, redir) {
-		var sqlite3 = require('sqlite3');
-		var db = new sqlite3.Database('db/uploads.db');
-		var fsExtra = require('fs-extra');
+		const sqlite3 = require('sqlite3')
+				,db = new sqlite3.Database('db/uploads.db')
+				,fsExtra = require('fs-extra');
 
 		db.run("DELETE FROM uploads WHERE path = ?;", path, (err) => {
-			if (err) {
+			if (err)
 				console.error(err);
-			}
 			else {
 				fsExtra.remove('./files/' + path, (err) => {
-					if (err) {
+					if (err)
 						return console.error(err);
-					}
 				});
-				if (res && redir) {
+				if (res && redir)
 					res.redirect(redir);
-				}
 			}
 		});
 	}
 
 	static report(path) {
-		var sqlite3 = require('sqlite3');
-		var db = new sqlite3.Database('db/uploads.db');
+		const sqlite3 = require('sqlite3')
+				,db = new sqlite3.Database('db/uploads.db');
 
 		db.get("SELECT * FROM uploads WHERE path = ? AND reported = 0;", path, (err, row) => {
 			if (err)
 				console.error(err);
 			else if (typeof row !== 'undefined') {
-				var sendmail = require('sendmail')();
-				var message = 'Yo nigga, you\'ve got a new report.<br>\
+				let sendmail = require('sendmail')();
+				let message = 'Yo nigga, you\'ve got a new report.<br>\
 				Check it out ====><a href="https://www.plus42.fr/' + path + '">Click here !</a><====';
 				sendmail({
 					from: 'admin@plus42.fr',
 					to: 'ndudnicz@protonmail.com',
 					subject: 'Plus42.fr: New report',
 					html: message
-				}, function(err, reply) {
+				}, (err, reply) => {
 					console.error(err && err.stack);
 					console.log(reply);
 				});
