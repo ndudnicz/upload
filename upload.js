@@ -69,30 +69,25 @@ app.set('view engine', 'ejs');
 app.get('/', (req, res) => {
 	let timeNow = new Date().getTime();
 	dbFiles.all("SELECT * FROM uploads;", (err, row) => {
-		if (err) {
+		if (err)
 			console.error(err);
-		}
-		else if (typeof row === 'undefined') {
+		else if (typeof row === 'undefined')
 			res.render('index.ejs', { n: 0 });
-		}
 		else {
 			var n = 0;
 			row.forEach((item) => {
-				if (timeNow - item['timestamp'] > __AVAILABLE_TIME__) {
+				if (timeNow - item['timestamp'] > __AVAILABLE_TIME__)
 					Files.del(item['path']);
-				}
-				else {
+				else
 					n += 1;
-				}
 			});
 			res.render('index.ejs', { n: n });
 		}
 	});
 })
 .post('/upload', (req, res) => {
-	var ip = req.headers['x-real-ip'];
 	var data = {
-		'ip': ip,
+		'ip': req.headers['x-real-ip'],
 		'req': req,
 		'path': req.body.perso
 	}
@@ -109,21 +104,18 @@ app.get('/', (req, res) => {
 					forbiddenUrl.indexOf(data['path']) === -1) {
 				var path = data['path'];
 			}
-			else {
+			else
 				var path = md5(filename + new Date().getTime());
-			}
 			Files.add(path, filename, data['ip'], res, data['req']);
 		});
 	}
 	var callbackFalse = (res) => {
 		res.redirect('https://www.youtube.com/watch?v=dQw4w9WgXcQ');
 	}
-	if (req.files.file.name) {
+	if (req.files.file.name)
 		Banned.checkBanned(res, data, callbackTrue, callbackFalse);
-	}
-	else {
+	else
 		res.redirect('/');
-	}
 })
 .get('/admin', (req, res) => {
 	var callbackTrue = (res) => {
@@ -178,8 +170,6 @@ app.get('/', (req, res) => {
 })
 .get('/delete/:id', (req, res) => {
 	var callbackTrue = (res, data) => {
-		var Banned = require('./libs/banned.js');
-
 		Banned.addFromPath(data, res, '/admin');
 	}
 	var callbackFalse = (res) => {
@@ -257,12 +247,9 @@ app.get('/', (req, res) => {
 	}
 })
 .get('/:id', (req, res) => {
-	var Files = require('./libs/files.js');
 	dbFiles.get("SELECT * FROM uploads WHERE path = ?;", req.params.id, (err, row) => {
-		if (err || typeof row === 'undefined') {
+		if (err || typeof row === 'undefined')
 			res.redirect('/');
-			//console.error(err);
-		}
 		else {
 			if (new Date().getTime() - row['timestamp'] > __AVAILABLE_TIME__) {
 				Files.del(req.params.id);
@@ -279,20 +266,16 @@ app.get('/', (req, res) => {
 .get('/unban/:ip', (req, res) => {
 	var ip = req.params.ip;
 	var callbackTrue = (res, data) => {
-		console.log('true');
-		var Banned = require('./libs/banned.js');
-
 		Banned.unban(data);
 		res.redirect('/admin');
 	};
 	var callbackFalse = (res) => {
-		console.log('false');
-		res.redirect('/');
+		res.redirect('/admin');
 	}
 	Admin.checkToken(req, res, ip, callbackTrue, callbackFalse);
 })
 .post('/checkurl', (req, res) => {
-	var url = req.body.checkurl;
+	let url = req.body.checkurl;
 	if (url && (/^[a-zA-Z0-9\-_]{3,50}$/).test(url) === true &&
 		forbiddenUrl.indexOf(url) === -1) {
 		dbFiles.get("SELECT * FROM uploads WHERE path = ?;", url, (err, row) => {

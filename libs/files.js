@@ -16,7 +16,7 @@ class Files {
 	}
 
 	static add(path, filename, ip, res, req) {
-		 let __N_FILES__ = 500;												/*N_FILE MAX HERE*/
+		let __N_FILES__ = 500;												/*N_FILE MAX HERE*/
 
 		const sqlite3 = require('sqlite3')
 				,db = new sqlite3.Database('db/uploads.db')
