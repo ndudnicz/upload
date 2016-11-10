@@ -5,84 +5,80 @@ class Files {
 	constructor() {
 	}
 
-
 	static all(DB) {
-		DB.find().toArray((err, result) => {console.log(result);})
+		DB.collection('files').find().toArray((err, result) => {console.log(result);})
 	}
 
 	static add(DB, path, filename, ip, res, req) {
 		const __N_FILES__ = 500;												/*N_FILE MAX HERE*/
-
 		const fs = require('fs')
-		,assert = require('assert');
+		const assert = require('assert');
 		var collection = DB.collection('files');
 
+		// Check total number of file
 		collection.find().toArray((err, result) => {
-			assert.equal(null, err);
+			if (err) {
+				res.send("DB ERROR");
+				return 0;
+			}
 			if (result.length < __N_FILES__) {
+
+				// mkdir a new storage folder
 				fs.mkdir('./files/' + path, () => {
+
+					// mv the file from tmp to its new folder
 					req.files.file.mv('./files/' + path + '/' + filename, (err) => {
-						console.log('add');
-						assert.equal(null, err);
+						if (err) {
+							res.send("DB ERROR");
+							return 0;
+						}
 						let timestamp = new Date().getTime()
 						,data = {
-								"path": path
-								,"filename": filename
-								,"ip": ip
-								,"reported": 0
-								,"timestamp": timestamp
-								,"download_number": 0
+							"path": path
+							,"filename": filename
+							,"ip": ip
+							,"reported": 0
+							,"timestamp": timestamp
+							,"download_number": 0
 						};
-						var promise = new Promise((resolve, reject) => {
-							collection.insertOne(data, (err, result) => {
-								resolve(result);
-								reject(err);
-							});
+
+						// Insert new data's file in DB
+						collection.insertOne(data, (err, result) => {
+							if (err) res.redirect('/');
+							else res.redirect('/' + path);
 						});
-						promise.then(result=>{res.redirect('/')});
-						promise.catch(result=>{res.redirect('/')})
 					});
 				});
 			}
 		});
-
-		/*db.all("SELECT * FROM uploads;", (err, row) => {
-			if (err) {
-				console.error(err);
-			}
-			if (row.length < __N_FILES__) {
-			}
-			else
-				res.redirect('/');
-		});*/
 	}
 
 	static del(path, res, redir) {
 		const sqlite3 = require('sqlite3')
-				,db = new sqlite3.Database('db/uploads.db')
-				,fsExtra = require('fs-extra');
+		,db = new sqlite3.Database('db/uploads.db')
+		,fsExtra = require('fs-extra');
 
 		db.run("DELETE FROM uploads WHERE path = ?;", path, (err) => {
 			if (err)
-				console.error(err);
+			console.error(err);
 			else {
 				fsExtra.remove('./files/' + path, (err) => {
 					if (err)
-						return console.error(err);
+					return console.error(err);
 				});
 				if (res && redir)
-					res.redirect(redir);
+				res.redirect(redir);
 			}
 		});
 	}
 
 	static report(path, adminEmail) {
 		const sqlite3 = require('sqlite3')
-				,db = new sqlite3.Database('db/uploads.db');
+		,db = new sqlite3.Database('db/uploads.db');
 
 		db.get("SELECT * FROM uploads WHERE path = ? AND reported = 0;", path, (err, row) => {
 			if (err)
-				console.error(err);
+			console.error(err);
 			else if (typeof row !== 'undefined') {
 				let sendmail = require('sendmail')();
 				let message = 'Yo nigga, you\'ve got a new report.<br>\

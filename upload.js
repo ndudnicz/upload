@@ -283,26 +283,27 @@ app.get('/', (req, res) => {
 		res.redirect('/admin');
 	}
 	Admin.checkToken(req, res, ip, callbackTrue, callbackFalse);
-})
+})*/
 .post('/checkurl', (req, res) => {
-	let url = req.body.checkurl;
+
+	// Ajax check personnalizeds url
+	let url = sanitize(req.body.checkurl);
 	if (url && (/^[a-zA-Z0-9\-_]{3,50}$/).test(url) === true &&
 	forbiddenUrl.indexOf(url) === -1) {
-		dbFiles.get("SELECT * FROM uploads WHERE path = ?;", url, (err, row) => {
-			if (err) {
+		DB.collection('files').find({path: url}).toArray((err, result) => {
+			if (err || result.length > 0) {
 				res.send(false);
 				return console.error(err);
 			}
-			else if (typeof row !== 'undefined')
-			res.send(false);
-			else
-			res.send(true);
+			else {
+				res.send(true);
+			}
 		});
 	}
 	else
-	res.send(false);
+		res.send(false);
 });
-*/
+
 app.use((req, res, next) => {
 	res.setHeader('Content-Type', 'text/html');
 	res.sendStatus(404);
