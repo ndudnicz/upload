@@ -53,21 +53,18 @@ class Files {
 		});
 	}
 
-	static del(path, res, redir) {
-		const sqlite3 = require('sqlite3')
-		,db = new sqlite3.Database('db/uploads.db')
-		,fsExtra = require('fs-extra');
+	static del(DB, path, res, redir) {
+		const fsExtra = require('fs-extra');
 
-		db.run("DELETE FROM uploads WHERE path = ?;", path, (err) => {
-			if (err)
-			console.error(err);
+		DB.collection('files').deleteOne({"path": path}, (err, result) => {
+			if (err) console.error(err);
 			else {
 				fsExtra.remove('./files/' + path, (err) => {
 					if (err)
-					return console.error(err);
+						return console.error(err);
 				});
 				if (res && redir)
-				res.redirect(redir);
+					res.redirect(redir);
 			}
 		});
 	}

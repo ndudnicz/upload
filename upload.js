@@ -94,8 +94,6 @@ app.get('/', (req, res) => {
 		'path': sanitize(req.body.perso)
 	}
 
-	// Callback true
-
 	function callbackTrue(DB, req, res, data) {
 		var filename = sanitize(req.files.file.name);
 		DB.collection('files').find({path: data['path']}).toArray((err, result) => {
@@ -104,6 +102,8 @@ app.get('/', (req, res) => {
 
 			if (err) res.redirect('/');
 			else {
+
+				// path isn't taken, set by user, pass the regex validation, isn't a forbidden url
 				if (result.length !== 0 || !data['path'] || (/^[a-zA-Z0-9\-_]{3,50}$/).test(data['path']) === false || forbiddenUrl.indexOf(data['path']) !== -1)
 					data['path'] = md5(filename + new Date().getTime());
 				Files.add(DB, data['path'], filename, data['ip'], res, req);
@@ -111,82 +111,78 @@ app.get('/', (req, res) => {
 		});
 	}
 
-	// Callback false
-
 	function callbackFalse(res) {
 		res.redirect('https://www.youtube.com/watch?v=dQw4w9WgXcQ');
 	}
 
 
-	if (req.files.file.name) {
+	if (req.files.file.name)
 		Banned.checkBanned(DB, req, res, data, callbackTrue, callbackFalse);
-		return 0;
-	}
-	else {
+	else
 		res.redirect('/');
-		return 0;
-	}
-})/*
+})
 .get('/admin', (req, res) => {
-	var callbackTrue = (res) => {
-		dbFiles.all("SELECT * FROM uploads;", (err, row) => {
-			if (err || typeof row === 'undefined') {
-				row = [];
-				console.error(err);
-			}
-			dbBanned.all("SELECT * FROM banned;", (err, banned) => {
-				if (err || typeof banned === 'undefined') {
-					banned = [];
-					console.error(err);
-				}
-				res.render('admin.ejs', { 'reported': row, 'banned': banned })
+	function callbackTrue(DB, res, data) {
+		DB.collection('files').find().toArray((err, files) => {
+			if (err) console.error(err);
+			DB.collection('banned').find().toArray((err, banned) => {
+				if (err) console.error(err);
+				res.render('admin.ejs', { 'reported': files || [], 'banned': banned || [] })
 			});
 		});
 	}
-	var callbackFalse = (res) => {
+	function callbackFalse(res) {
 		res.render('admin_non_log.ejs')
 	}
-	Admin.checkToken(req, res, null, callbackTrue, callbackFalse);
+	Admin.checkToken(DB, req, res, null, callbackTrue, callbackFalse);
 })
 .post('/admin', (req, res) => {
-	dbUsers.get("SELECT * FROM users WHERE login = ?;", req.body.login, (err, row) => {
-		if (err || typeof row === 'undefined') {
+	let login = sanitize(req.body.login);
+
+	DB.collection('admin').find({"_id": login}).toArray((err, result) => {
+		if (err) {
 			res.redirect('/admin');
 			return console.error(err);
 		}
+		else if (result.length === 0)
+			res.redirect('/admin');
 		else {
-			if (bcrypt.compareSync(req.body.password, row.pass) === true) {
-				Admin.setToken(req, res, req.body.login);
-			}
-			else {
+			console.log(bcrypt.compareSync(req.body.password, result[0]["pwd"]));
+			if (bcrypt.compareSync(req.body.password, result[0]["pwd"]) === true)
+				Admin.setToken(DB, req, res, login);
+			else
 				res.redirect('/admin');
-			}
 		}
 	});
 })
 .get('/unreport/:id', (req, res) => {
-	var callbackTrue = (res) => {
-		dbFiles.run("UPDATE uploads SET reported = 0 WHERE path = ?;", req.params.id, (err) => {
-			if (err) {
-				console.error(err);
-			}
-			res.redirect('/admin');
+	let id = sanitize(req.params.id);
+
+	function callbackTrue(DB, res, data) {
+		DB.collection('files').updateOne(
+			{"path": data},
+			{$set: {"reported": 0}},
+			(err, result) => {
+				res.redirect('/admin');
 		});
 	}
-	var callbackFalse = (res) => {
+
+	function callbackFalse(res) {
 		res.redirect('/');
 	}
-	Admin.checkToken(req, res, null, callbackTrue, callbackFalse);
+	Admin.checkToken(DB, req, res, data, callbackTrue, callbackFalse);
 })
 .get('/delete/:id', (req, res) => {
-	var callbackTrue = (res, data) => {
-		Banned.addFromPath(data, res, '/admin');
+	let id = sanitize(req.params.id);
+
+	function callbackTrue(DB, res, path) {
+		Banned.addFromPath(DB, path, res, '/admin');
 	}
-	var callbackFalse = (res) => {
+	function callbackFalse(res) {
 		res.redirect('/');
 	}
-	Admin.checkToken(req, res, req.params.id, callbackTrue, callbackFalse);
-})
+	Admin.checkToken(DB, req, res, id, callbackTrue, callbackFalse);
+})/*
 .get('/download/:id', (req, res) => {
 	dbFiles.get("SELECT * FROM uploads WHERE path = ?;", req.params.id, (err, row) => {
 		if (err || typeof row === "undefined") {
@@ -272,18 +268,19 @@ app.get('/', (req, res) => {
 			}
 		}
 	});
-})
+})*/
 .get('/unban/:ip', (req, res) => {
-	var ip = req.params.ip;
-	var callbackTrue = (res, data) => {
-		Banned.unban(data);
+	var ip = sanitize(req.params.ip);
+
+	function callbackTrue(DB, res, data) {
+		Banned.unban(DB, data);
 		res.redirect('/admin');
 	};
-	var callbackFalse = (res) => {
+	function callbackFalse(res) {
 		res.redirect('/admin');
 	}
-	Admin.checkToken(req, res, ip, callbackTrue, callbackFalse);
-})*/
+	Admin.checkToken(DB, req, res, ip, callbackTrue, callbackFalse);
+})
 .post('/checkurl', (req, res) => {
 
 	// Ajax check personnalizeds url
@@ -295,9 +292,8 @@ app.get('/', (req, res) => {
 				res.send(false);
 				return console.error(err);
 			}
-			else {
+			else
 				res.send(true);
-			}
 		});
 	}
 	else

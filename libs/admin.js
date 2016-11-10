@@ -4,17 +4,16 @@ class Admin {
 	constructor() {
 	}
 
-	static setToken(req, res, login) {
-		const sqlite3 = require('sqlite3')
-				,dbUsers = new sqlite3.Database('db/users.db')
-				,md5 = require('md5');
+	static setToken(DB, req, res, login) {
+		const md5 = require('md5');
 
 		let sess = req.session
-			,token = md5(new Date().getTime() + req.body.login);
+			,token = md5(new Date().getTime() + login);
 
-		dbUsers.run("UPDATE users SET token = ? WHERE login = ?;"
-		,[ token, login ]
-		,(err) => {
+		DB.collection('admin').updateOne(
+			{"_id": login},
+			{$set: {"token": token}},
+			(err, result) => {
 			if (err)
 				console.error(err);
 			else
@@ -23,25 +22,22 @@ class Admin {
 		});
 	}
 
-	static checkToken(req, res, data, callbackTrue, callbackFalse) {
-		const sqlite3 = require('sqlite3')
-				,dbUsers = new sqlite3.Database('db/users.db')
-
+	static checkToken(DB, req, res, data, callbackTrue, callbackFalse) {
 		let sess = req.session;
 
 		if (!sess || !sess.token) {
 			callbackFalse(res);
 		}
 		else {
-			dbUsers.get("SELECT * FROM users WHERE token = ?;",
-			sess.token,
-			(err, row) => {
-				if (err || typeof row === 'undefined') {
+			DB.collection('admin').find({token: sess.token}).toArray((err, result) => {
+				if (err) {
 					callbackFalse(res);
 					return console.error(err);
 				}
+				else if (result.length === 0)
+					callbackFalse(res);
 				else
-					callbackTrue(res, data);
+					callbackTrue(DB, res, data);
 			});
 		}
 	}
