@@ -38,7 +38,7 @@ promise.then(db => {
 
 		deleteOne(collection, {"_id": configSetup['adminLogin']}, function() {
 			var data = {
-				"_id": config['adminLogin']
+				"_id": configSetup['adminLogin']
 				,"pwd": hash
 				,"token": "toto"
 			};

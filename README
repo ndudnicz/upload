@@ -20,7 +20,6 @@ SETUP:
 	{
 		,"adminLogin": ""
 		,"adminPassword": ""
-		,"adminEmail": ""
 	}
 
 - set a header 'x-real-ip' = 'remote ip' with your reverse proxy server nginx/apache
