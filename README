@@ -1,4 +1,5 @@
 SETUP:
+- setup a mongodb server
 - npm install
 - mkdir files
 - mkdir db
@@ -7,8 +8,6 @@ SETUP:
 	{
 		"captchaPublicKey": ""
 		"captchaSecretKey": ""
-		,"adminLogin": ""
-		,"adminPassword": ""
 		,"adminEmail": ""
 		,"sessionSecret": ""
 		,"mongodbUser": ""
@@ -16,7 +15,15 @@ SETUP:
 		,"mongodbURL": "mongodb://ip:port/"
 		,"mongodbDB": ""
 	}
+
+- touch config.setup.json:
+	{
+		,"adminLogin": ""
+		,"adminPassword": ""
+		,"adminEmail": ""
+	}
+
 - set a header 'x-real-ip' = 'remote ip' with your reverse proxy server nginx/apache
 - node setup.js
-- delete adminLogin and adminPassword values in config.json
+- npm test
 - node upload.js

@@ -2,13 +2,11 @@ const assert = require('assert')
 ,config = JSON.parse(require('fs').readFileSync('config.json'))
 ,Mongo = require('mongodb');
 
-configJsonKeys = ["captchaPublicKey", "captchaSecretKey", "adminLogin"
-, "adminPassword", "adminEmail", "sessionSecret", "mongodbUser", "mongodbPwd"
+configJsonKeys = ["captchaPublicKey", "captchaSecretKey", "adminEmail"
+, "sessionSecret", "mongodbUser", "mongodbPwd"
 ,"mongodbURL", "mongodbDB"]
 
-describe('', () => {
-
-	// Check config.json file
+describe('Configuration check', () => {
 
 	describe('#Config.json tests', () => {
 		it('Existing keys', () => {
@@ -17,14 +15,8 @@ describe('', () => {
 		});
 		it('Existing values', () => {
 			for (let i in configJsonKeys) {
-				if (configJsonKeys[i] === 'adminLogin' || configJsonKeys[i] === 'adminPassword')
-				continue;
 				assert.notEqual("", config[configJsonKeys[i]], `Missing value in config.json: ${configJsonKeys[i]} => EMPTY`);
 			}
-		});
-		it('Admin keys empty in prod', () => {
-			assert.equal("", config["adminLogin"], "adminLogin should be empty in prod");
-			assert.equal("", config["adminPassword"], "adminPassword should be empty in prod");
 		});
 	});
 	describe('#Mongodb tests', () => {

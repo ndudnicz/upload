@@ -1,4 +1,5 @@
 const fs = require('fs')
+,configSetup = JSON.parse(fs.readFileSync('./config.setup.json'))
 ,config = JSON.parse(fs.readFileSync('./config.json'))
 ,Mongo = require('mongodb')
 ,assert = require('assert')
@@ -32,10 +33,10 @@ promise.then(db => {
 	db.authenticate(config['mongodbUser'], config['mongodbPwd'], (err, res) => {
 		assert.equal(null, err);
 
-		let hash = bcrypt.hashSync(config['adminPassword'], bcrypt.genSaltSync(10))
+		let hash = bcrypt.hashSync(configSetup['adminPassword'], bcrypt.genSaltSync(10))
 			,collection = db.collection('admin');
 
-		deleteOne(collection, {"_id": config['adminLogin']}, function() {
+		deleteOne(collection, {"_id": configSetup['adminLogin']}, function() {
 			var data = {
 				"_id": config['adminLogin']
 				,"pwd": hash
