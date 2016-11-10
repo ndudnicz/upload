@@ -6,58 +6,55 @@ class Files {
 	}
 
 
-	static all() {
-		const sqlite3 = require('sqlite3')
-				,db = new sqlite3.Database('db/uploads.db');
-
-		db.all("SELECT * FROM uploads", (err, row) => {
-			console.log(row);
-		});
+	static all(DB) {
+		DB.find().toArray((err, result) => {console.log(result);})
 	}
 
-	static add(path, filename, ip, res, req) {
-		let __N_FILES__ = 500;												/*N_FILE MAX HERE*/
+	static add(DB, path, filename, ip, res, req) {
+		const __N_FILES__ = 500;												/*N_FILE MAX HERE*/
 
-		const sqlite3 = require('sqlite3')
-				,db = new sqlite3.Database('db/uploads.db')
-				,fs = require('fs');
+		const fs = require('fs')
+		,assert = require('assert');
+		var collection = DB.collection('files');
 
-		db.all("SELECT * FROM uploads;", (err, row) => {
+		collection.find().toArray((err, result) => {
+			assert.equal(null, err);
+			if (result.length < __N_FILES__) {
+				fs.mkdir('./files/' + path, () => {
+					req.files.file.mv('./files/' + path + '/' + filename, (err) => {
+						console.log('add');
+						assert.equal(null, err);
+						let timestamp = new Date().getTime()
+						,data = {
+								"path": path
+								,"filename": filename
+								,"ip": ip
+								,"reported": 0
+								,"timestamp": timestamp
+								,"download_number": 0
+						};
+						var promise = new Promise((resolve, reject) => {
+							collection.insertOne(data, (err, result) => {
+								resolve(result);
+								reject(err);
+							});
+						});
+						promise.then(result=>{res.redirect('/')});
+						promise.catch(result=>{res.redirect('/')})
+					});
+				});
+			}
+		});
+
+		/*db.all("SELECT * FROM uploads;", (err, row) => {
 			if (err) {
 				console.error(err);
 			}
 			if (row.length < __N_FILES__) {
-				fs.mkdir('./files/' + path, () => {
-					req.files.file.mv('./files/' + path + '/' + filename, (err) => {
-						if (err) {
-							res.redirect('/');
-							return console.error(err);
-						}
-						else {
-							let timestamp = new Date().getTime();
-							let query = db.prepare("INSERT INTO uploads VALUES (?, ?, ?, ?, ?, ?, 0);",
-							[
-								null,
-								path,
-								filename,
-								ip,
-								0,
-								timestamp
-							]);
-
-							query.run((err) => {
-								if (err)
-									return console.error(err);
-								res.redirect('/' + path);
-							});
-							query.finalize();
-						}
-					});
-				});
 			}
 			else
 				res.redirect('/');
-		});
+		});*/
 	}
 
 	static del(path, res, redir) {
