@@ -11,6 +11,10 @@ SETUP:
 		,"adminPassword": ""
 		,"adminEmail": ""
 		,"sessionSecret": ""
+		,"mongodbUser": ""
+		,"mongodbPwd": ""
+		,"mongodbURL": "mongodb://ip:port/"
+		,"mongodbDB": ""
 	}
 - set a header 'x-real-ip' = 'remote ip' with your reverse proxy server nginx/apache
 - node setup.js
