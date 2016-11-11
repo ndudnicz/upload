@@ -2,7 +2,6 @@ SETUP:
 - setup a mongodb server
 - npm install
 - mkdir files
-- mkdir db
 - you need a google account for the captcha keys
 - touch config.json:
 	{
@@ -18,7 +17,7 @@ SETUP:
 
 - touch config.setup.json:
 	{
-		,"adminLogin": ""
+		"adminLogin": ""
 		,"adminPassword": ""
 	}
 
