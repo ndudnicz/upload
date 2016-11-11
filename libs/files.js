@@ -32,7 +32,7 @@ class Files {
 							res.send("DB ERROR");
 							return 0;
 						}
-						let timestamp = new Date().getTime()
+						var timestamp = new Date().getTime()
 						,data = {
 							"path": path
 							,"filename": filename
@@ -69,10 +69,12 @@ class Files {
 		});
 	}
 
-	static report(path, adminEmail) {
-		const sqlite3 = require('sqlite3')
-		,db = new sqlite3.Database('db/uploads.db');
-
+	static report(DB, path, adminEmail) {
+		var doc = DB.collection('files').findOneAndUpdate({"path": path}, {$set:{"reported": 1}});
+		doc.then(result => {
+			result.value
+		});
+/*
 		db.get("SELECT * FROM uploads WHERE path = ? AND reported = 0;", path, (err, row) => {
 			if (err)
 			console.error(err);
@@ -92,7 +94,7 @@ class Files {
 
 				db.run("UPDATE uploads SET reported = 1 WHERE path = ?;", path);
 			}
-		});
+		});*/
 	}
 }
 

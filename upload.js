@@ -81,9 +81,9 @@ app.get('/', (req, res) => {
 		var n = result.length;
 		for (let i in result) {
 			if (timeNow - result[i]['timestamp'] > __AVAILABLE_TIME__)
-			Files.del(result[i]["path"]);
+				Files.del(DB, result[i]["path"]);
 			else
-			n += 1;
+				n += 1;
 		}
 		res.render('index.ejs', { n : n });
 	});
@@ -127,7 +127,7 @@ app.get('/', (req, res) => {
 			if (err) console.error(err);
 			DB.collection('banned').find().toArray((err, banned) => {
 				if (err) console.error(err);
-				res.render('admin.ejs', { 'reported': files || [], 'banned': banned || [] })
+				res.render('admin.ejs', { 'reported': files, 'banned': banned })
 			});
 		});
 	}
@@ -189,35 +189,24 @@ app.get('/', (req, res) => {
 		if (err || result.length === 0)
 			res.redirect('/');
 			else {
-				if (new Date().getTime() - row['timestamp'] > __AVAILABLE_TIME__)
+				if (new Date().getTime() - result[0]['timestamp'] > __AVAILABLE_TIME__)
 					Files.del(DB, path, res, '/');
 				else {
-					var file = './files/' + row['path'] + '/' + row['filename'];
+					var file = './files/' + result[0]['path'] + '/' + result[0]['filename'];
 					res.download(file);
-					DB.collection('files').updateOne({"path": path}).toArray((err, result) => {
-
-					});
-					/*dbFiles.run("UPDATE uploads SET download_number = download_number + 1 WHERE path = ?;", row['path'], (err) => {
+					DB.collection('files').updateOne({"path": path}, {$inc: {"download_number": 1}}, (err, result) => {
 						if (err)
-						console.error(err);
-					});*/
+							console.error(err);
+					});
 				}
-
 			}
 	});
-	/*dbFiles.get("SELECT * FROM uploads WHERE path = ?;", req.params.id, (err, row) => {
-		if (err || typeof row === "undefined") {
-		}
-		else {
-			else {
-			}
-		}
-	});*/
-})/*
-.get('/report/:id', (req, res) => {
-	Files.report(req.params.id, config["adminEmail"]);
-	res.render('report.ejs');
 })
+.get('/report/:id', (req, res) => {
+	var path = sanitize(req.params.id);
+	Files.report(DB, path, config["adminEmail"]);
+	res.render('report.ejs');
+})/*
 .get('/contact', (req, res) => {
 	res.render('contact.ejs', { publicKey: config['captchaPublicKey'], message: "", error: null, success: null });
 })
