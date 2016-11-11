@@ -182,28 +182,38 @@ app.get('/', (req, res) => {
 		res.redirect('/');
 	}
 	Admin.checkToken(DB, req, res, id, callbackTrue, callbackFalse);
-})/*
+})
 .get('/download/:id', (req, res) => {
-	dbFiles.get("SELECT * FROM uploads WHERE path = ?;", req.params.id, (err, row) => {
-		if (err || typeof row === "undefined") {
+	var path = sanitize(req.params.id);
+	DB.collection('files').find({"path": path}).toArray((err, result) => {
+		if (err || result.length === 0)
 			res.redirect('/');
+			else {
+				if (new Date().getTime() - row['timestamp'] > __AVAILABLE_TIME__)
+					Files.del(DB, path, res, '/');
+				else {
+					var file = './files/' + row['path'] + '/' + row['filename'];
+					res.download(file);
+					DB.collection('files').updateOne({"path": path}).toArray((err, result) => {
+
+					});
+					/*dbFiles.run("UPDATE uploads SET download_number = download_number + 1 WHERE path = ?;", row['path'], (err) => {
+						if (err)
+						console.error(err);
+					});*/
+				}
+
+			}
+	});
+	/*dbFiles.get("SELECT * FROM uploads WHERE path = ?;", req.params.id, (err, row) => {
+		if (err || typeof row === "undefined") {
 		}
 		else {
-			if (new Date().getTime() - row['timestamp'] > __AVAILABLE_TIME__) {
-				Files.del(req.params.id);
-				res.redirect('/');
-			}
 			else {
-				var file = './files/' + row['path'] + '/' + row['filename'];
-				res.download(file);
-				dbFiles.run("UPDATE uploads SET download_number = download_number + 1 WHERE path = ?;", row['path'], (err) => {
-					if (err)
-					console.error(err);
-				});
 			}
 		}
-	});
-})
+	});*/
+})/*
 .get('/report/:id', (req, res) => {
 	Files.report(req.params.id, config["adminEmail"]);
 	res.render('report.ejs');
@@ -251,24 +261,23 @@ app.get('/', (req, res) => {
 			res.render('contact.ejs', { publicKey: config['captchaPublicKey'], message: req.body.message.substr(0, 1000), error: "Invalid message.", success: null });
 		}
 	}
-})
-.get('/:id', (req, res) => {
-	dbFiles.get("SELECT * FROM uploads WHERE path = ?;", req.params.id, (err, row) => {
-		if (err || typeof row === 'undefined')
-		res.redirect('/');
-		else {
-			if (new Date().getTime() - row['timestamp'] > __AVAILABLE_TIME__) {
-				Files.del(req.params.id);
-				return res.redirect('/');
-			}
-			else {
-				row['size'] = fs.statSync('./files/' + row['path'] + '/' + row['filename'])['size'];
-				row['deleted'] = (__AVAILABLE_TIME__ - (new Date().getTime() - row['timestamp'])) / 1000;
-				return res.render('download.ejs', { 'data': row });
-			}
-		}
-	});
 })*/
+.get('/:id', (req, res) => {
+	var path = sanitize(req.params.id);
+	DB.collection('files').find({"path": path}).toArray((err, result) => {
+		if (err || result.length === 0)
+			res.redirect('/');
+			else {
+				if (new Date().getTime() - result[0]['timestamp'] > __AVAILABLE_TIME__)
+					Files.del(DB, path, res, '/');
+				else {
+					result[0]['size'] = fs.statSync('./files/' + result[0]['path'] + '/' + result[0]['filename'])['size'];
+					result[0]['deleted'] = (__AVAILABLE_TIME__ - (new Date().getTime() - result[0]['timestamp'])) / 1000;
+					res.render('download.ejs', { 'data': result[0] });
+				}
+			}
+	});
+})
 .get('/unban/:ip', (req, res) => {
 	var ip = sanitize(req.params.ip);
 
