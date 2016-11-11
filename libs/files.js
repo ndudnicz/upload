@@ -61,10 +61,10 @@ class Files {
 			else {
 				fsExtra.remove('./files/' + path, (err) => {
 					if (err)
-						return console.error(err);
+					return console.error(err);
 				});
 				if (res && redir)
-					res.redirect(redir);
+				res.redirect(redir);
 			}
 		});
 	}
@@ -72,13 +72,7 @@ class Files {
 	static report(DB, path, adminEmail) {
 		var doc = DB.collection('files').findOneAndUpdate({"path": path}, {$set:{"reported": 1}});
 		doc.then(result => {
-			result.value
-		});
-/*
-		db.get("SELECT * FROM uploads WHERE path = ? AND reported = 0;", path, (err, row) => {
-			if (err)
-			console.error(err);
-			else if (typeof row !== 'undefined') {
+			if (result.value.reported === 0) {
 				let sendmail = require('sendmail')();
 				let message = 'Yo nigga, you\'ve got a new report.<br>\
 				Check it out ====><a href="https://www.plus42.fr/' + path + '">Click here !</a><====';
@@ -89,13 +83,22 @@ class Files {
 					html: message
 				}, (err, reply) => {
 					console.error(err && err.stack);
-					console.log(reply);
-				});
 
-				db.run("UPDATE uploads SET reported = 1 WHERE path = ?;", path);
+				});
 			}
-		});*/
-	}
+		});
+		/*
+		db.get("SELECT * FROM uploads WHERE path = ? AND reported = 0;", path, (err, row) => {
+		if (err)
+		console.error(err);
+		else if (typeof row !== 'undefined') {
+		console.log(reply);
+	});
+
+	db.run("UPDATE uploads SET reported = 1 WHERE path = ?;", path);
+}
+});*/
+}
 }
 
 module.exports = Files;
