@@ -7,9 +7,10 @@
 </head>
 
 
-<% include partial/header.ejs %>
-
+<div id="layer">
+<div id="wrapper">
 <div id="container">
+<% include partial/header.ejs %>
 	<form action="/contact" method="post" encType="application/x-www-form-urlencoded">
 		<div id="div-contact">
 			<% if (error) { %>
@@ -26,6 +27,8 @@
 			<span id="counter">1000</span>
 		</div>
 	</form>
+</div>
+</div>
 </div>
 
 <script>

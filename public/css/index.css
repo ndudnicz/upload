@@ -1,9 +1,18 @@
 body {
-	background-color: rgb(34, 34, 34);
+	background-image: url(/images/background.png);
 	color: white;
 	font-family: sans-serif;
 	font-weight: lighter;
+	margin: 0px;
 	height: 90%;
+}
+
+#layer {
+	background-color: rgba(30, 30, 30, 0.7);
+	position: absolute;
+	margin: 0px;
+	width: 100%;
+	height: 100%;
 }
 
 header {
@@ -18,6 +27,18 @@ header {
 
 #header-download {
 	margin-bottom: 40px;
+}
+
+#wrapper {
+	background-color: rgba(5, 5, 5, 0.5);
+	width: 500px;
+	padding: 40px;
+	margin: auto;
+	margin-top: 50px;
+	border-radius: 30px;
+	-moz-box-shadow: inset 0 0 5px 5px rgba(30, 30, 30, 0.5);
+	-webkit-box-shadow: inset 0 0 5px 5px rgba(30, 30, 30, 0.5);
+	box-shadow: inset 0 0 5px 5px rgba(30, 30, 30, 0.5);
 }
 
 #container {
@@ -211,6 +232,11 @@ footer td {
 	#container, footer {
 		width: 330px;
 		overflow: auto;
+	}
+
+	#wrapper {
+		width: 100%;
+		padding: 20px 0px 20px 0px;
 	}
 
 	.td-left-index {
