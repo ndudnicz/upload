@@ -39,10 +39,18 @@ const express = require('express')
 var DB
 ,url = config['mongodbURL'] + config['mongodbDB'];
 
-Mongo.connect(url, (err, db) => {
-	assert.equal(null, err);
-	console.log(`Mongodb connected to ${config['mongodbURL']}${config['mongodbDB']}`);
-	DB = db;
+new Promise ((resolve, reject) => {
+		Mongo.connect(url, (err, db) => {
+			assert.equal(null, err);
+			console.log(`Mongodb: connected to ${config['mongodbURL']}${config['mongodbDB']}`);
+			DB = db;
+			resolve(db);
+		});
+}).then(db => {
+	db.authenticate(config['mongodbUser'], config['mongodbPwd'], (err, result) => {
+		assert.equal(null, err);
+			console.log(`Mongodb: logged as ${config['mongodbUser']}`);
+	});
 });
 
 app.use(bodyParser.json());
