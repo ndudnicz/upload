@@ -1,21 +1,17 @@
 "use strict";
 
 class Banned {
+
 	constructor() {
 	}
 
-	static all() {
-		const sqlite3 = require('sqlite3')
-				,dbBanned = new sqlite3.Database('db/banned.db');
-
-		dbBanned.all("SELECT * FROM banned;", (err, row) => {
-			if (err)
-				console.error(err);
-			else if (typeof row !== 'undefined')
-				console.log(row);
+	static all(DB) {
+		DB.collection('banned').find({}),toArray((err, result)=>{
+			if (err) console.error(err);
+			console.log(result);
 		});
 	}
-
+/*
 	static add(ip) {
 		const sqlite3 = require('sqlite3')
 				,dbBanned = new sqlite3.Database('db/banned.db');
@@ -27,51 +23,39 @@ class Banned {
 				console.error(err);
 		});
 	}
-
-	static addFromPath(path, res, redir) {
-		const sqlite3 = require('sqlite3')
-				,dbFiles = new sqlite3.Database('db/uploads.db')
-				,dbBanned = new sqlite3.Database('db/banned.db');
-
+*/
+	static addFromPath(DB, path, res, redir) {
 		let timestamp = new Date().getTime();
 
-		dbFiles.get("SELECT * FROM uploads WHERE path = ?;", path, (err, row) => {
-			if (err || typeof row === 'undefined')
+		DB.collection('files').find({"path": path}).toArray((err, result) => {
+			if (err || result.length === 0)
 				return console.error(err);
 			else {
-				dbBanned.run("INSERT INTO banned VALUES (NULL, ?, ?);", [row.ip, timestamp], (err) => {
-					var Files = require('./files.js');
-					Files.del(path, res, redir);
-					if (err)
-						console.error(err);
+				DB.collection('banned').insertOne({"ip": result[0]["ip"], "timestamp": timestamp},
+					(err, result) => {
+						require('./files.js').del(DB, path, res, redir);
+						if (err) console.error(err);
 				});
 			}
 		});
 	}
 
-	static unban(ip) {
-		const sqlite3 = require('sqlite3')
-				,dbBanned = new sqlite3.Database('db/banned.db');
-
-		dbBanned.run("DELETE FROM banned WHERE ip = ?;", ip, (err) => {
+	static unban(DB, ip) {
+		DB.collection('banned').deleteOne({"ip": ip}, (err, result) => {
 			if (err)
 				console.error(err);
 		});
 	}
 
-	static checkBanned(res, data, callbackTrue, callbackFalse) {
-		const sqlite3 = require('sqlite3')
-				,dbBanned = new sqlite3.Database('db/banned.db');
-
-		dbBanned.get("SELECT * FROM banned WHERE ip = ?;", data['ip'], (err, row) => {
+	static checkBanned(DB, req, res, data, callbackTrue, callbackFalse) {
+		DB.collection('banned').find({"ip": data['ip']}).toArray((err, result) => {
 			if (err) {
-				callbackFalse(res)
-				return console.error(err);
+				res.redirect('/');
+				console.error(err);
 			}
-			else if (typeof row === 'undefined')
-				callbackTrue(res, data);
-			else
-				callbackFalse(res)
+			else if (result[0])
+				callbackFalse(res);
+			else callbackTrue(DB, req, res, data);
 		});
 	}
 }

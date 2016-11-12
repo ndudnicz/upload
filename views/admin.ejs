@@ -4,30 +4,30 @@
 
 <title>Admin</title>
 <p>Reported:</p>
-<% reported.forEach((item) => { %>
-	<% if (item.reported === 1) { %>
-		[<%= item.ip %>][<%= new Date(item.timestamp).toLocaleDateString() %>
-		<%= new Date(item.timestamp).toLocaleTimeString() %>]
-		[<a href="/<%= item.path %>"><%= item.path %></a>]
-		<a href="/unreport/<%= item.path %>"><button>Nope</button></a>
-		<a href="/delete/<%= item.path %>"><button>Delete upload</button></a>
-		<a href="/<%= item.path %>"><%= item.filename %></a>
+<% for(var key in reported) { %>
+	<% if (reported[key]["reported"] === 1) { %>
+		[<%= reported[key]["ip"] %>][<%= new Date(reported[key]["timestamp"]).toLocaleDateString() %>
+		<%= new Date(reported[key]["timestamp"]).toLocaleTimeString() %>]
+		[<a href="/<%= reported[key]['path'] %>"><%= reported[key]["path"] %></a>]
+		<a href="/unreport/<%= reported[key]['path'] %>"><button>Nope</button></a>
+		<a href="/delete/<%= reported[key]['path'] %>"><button>Delete upload</button></a>
+		<a href="/<%= reported[key]['path'] %>"><%= reported[key]["filename"] %></a>
 		<br />
 	<% } %>
-<% }); %>
+<% } %>
 <p>All:</p>
-<% reported.forEach((item) => { %>
-	[<%= item.ip %>][<%= new Date(item.timestamp).toLocaleDateString() %>
-	<%= new Date(item.timestamp).toLocaleTimeString() %>]
-	[downloaded: <%= item.download_number %>]
-	[<a href="/<%= item.path %>"><%= item.path %></a>]
-	<a href="/delete/<%= item.path %>"><button>Delete upload</button></a>
-	<a href="/<%= item.path %>"><%= item.filename %></a>
+<% for(var key in reported) { %>
+	[<%= reported[key].ip %>][<%= new Date(reported[key].timestamp).toLocaleDateString() %>
+	<%= new Date(reported[key].timestamp).toLocaleTimeString() %>]
+	[downloaded: <%= reported[key].download_number %>]
+	[<a href="/<%= reported[key].path %>"><%= reported[key].path %></a>]
+	<a href="/delete/<%= reported[key].path %>"><button>Delete upload</button></a>
+	<a href="/<%= reported[key].path %>"><%= reported[key].filename %></a>
 	<br />
-<% }); %>
+<% } %>
 <p>Banned:</p>
-<% banned.forEach((item) => { %>
-	<%= item.ip %>
-	<a href="/unban/<%= item.ip %>"><button>Unban</button></a>
+<% for(var key in banned) { %>
+	<%= banned[key].ip %>
+	<a href="/unban/<%=  banned[key].ip %>"><button>Unban</button></a>
 	<br />
-<% }); %>
+<% } %>
