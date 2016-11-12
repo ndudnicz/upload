@@ -6,9 +6,10 @@
 </head>
 
 
-<% include partial/header.ejs %>
-
+<div id="layer">
+<div id="wrapper">
 <div id="container">
+<% include partial/header.ejs %>
 	<table>
 		<tr>
 			<td class="td-left-download td-download">File:</td>
@@ -40,6 +41,7 @@
 	<a href="/download/<%= data['path'] %>"><button class="btn btn-download">Download</button></a>
 	<a href="/report/<%= data['path'] %>"><button class="btn btn-download">Report</button></a>
 	<div id="qrcode-div"><img id="qrcode-img" alt="Qrcode" src="https://chart.googleapis.com/chart?cht=qr&chs=177x177&chl=https://www.plus42.fr/<%= data['path'] %>&chld=L"></div>
-</div>
-
 <% include partial/footer.ejs %>
+</div>
+</div>
+</div>

@@ -5,104 +5,89 @@ class Files {
 	constructor() {
 	}
 
-	static all() {
-		var sqlite3 = require('sqlite3');
-		var db = new sqlite3.Database('db/uploads.db');
-
-		db.all("SELECT * FROM uploads", (err, row) => {
-			console.log(row);
+	static all(DB) {
+		DB.collection('files').find({}),toArray((err, result)=>{
+			if (err) console.error(err);
+			console.log(result);
 		});
 	}
 
-	static add(path, filename, ip, res, req) {
-		var __N_FILES__ = 500;												/*N_FILE MAX HERE*/
-		var sqlite3 = require('sqlite3');
-		var db = new sqlite3.Database('db/uploads.db');
-		var fs = require('fs');
-		db.all("SELECT * FROM uploads;", (err, row) => {
+	static add(DB, path, filename, ip, res, req) {
+		const __N_FILES__ = 500;												/*N_FILE MAX HERE*/
+		const fs = require('fs')
+		const assert = require('assert');
+		var collection = DB.collection('files');
+
+		// Check total number of file
+		collection.find().toArray((err, result) => {
 			if (err) {
-				console.error(err);
+				res.send("DB ERROR");
+				return 0;
 			}
-			if (row.length < __N_FILES__) {
+			if (result.length < __N_FILES__) {
+
+				// mkdir a new storage folder
 				fs.mkdir('./files/' + path, () => {
+
+					// mv the file from tmp to its new folder
 					req.files.file.mv('./files/' + path + '/' + filename, (err) => {
 						if (err) {
-							res.redirect('/');
-							return console.error(err);
+							res.send("DB ERROR");
+							return 0;
 						}
-						else {
-							var timestamp = new Date().getTime();
-							var query = db.prepare("INSERT INTO uploads VALUES (?, ?, ?, ?, ?, ?, 0);",
-							[
-								null,
-								path,
-								filename,
-								ip,
-								0,
-								timestamp
-							]);
+						var timestamp = new Date().getTime()
+						,data = {
+							"path": path
+							,"filename": filename
+							,"ip": ip
+							,"reported": 0
+							,"timestamp": timestamp
+							,"download_number": 0
+						};
 
-							query.run((err) => {
-								if (err) {
-									return console.error(err);
-								}
-								res.redirect('/' + path);
-							});
-							query.finalize();
-						}
+						// Insert new data's file in DB
+						collection.insertOne(data, (err, result) => {
+							if (err) res.redirect('/');
+							else res.redirect('/' + path);
+						});
 					});
 				});
 			}
-			else {
-				res.redirect('/');
-			}
 		});
 	}
 
-	static del(path, res, redir) {
-		var sqlite3 = require('sqlite3');
-		var db = new sqlite3.Database('db/uploads.db');
-		var fsExtra = require('fs-extra');
+	static del(DB, path, res, redir) {
+		const fsExtra = require('fs-extra');
 
-		db.run("DELETE FROM uploads WHERE path = ?;", path, (err) => {
-			if (err) {
-				console.error(err);
-			}
+		DB.collection('files').deleteOne({"path": path}, (err, result) => {
+			if (err) console.error(err);
 			else {
 				fsExtra.remove('./files/' + path, (err) => {
-					if (err) {
-						return console.error(err);
-					}
+					if (err)
+					return console.error(err);
 				});
-				if (res && redir) {
-					res.redirect(redir);
-				}
+				if (res && redir)
+				res.redirect(redir);
 			}
 		});
 	}
 
-	static report(path, adminEmail) {
-		var sqlite3 = require('sqlite3');
-		var db = new sqlite3.Database('db/uploads.db');
-
-		db.get("SELECT * FROM uploads WHERE path = ? AND reported = 0;", path, (err, row) => {
-			if (err)
-				console.error(err);
-			else if (typeof row !== 'undefined') {
-				var sendmail = require('sendmail')();
-				var message = 'Yo nigga, you\'ve got a new report.<br>\
+	static report(DB, path, adminEmail) {
+		var doc = DB.collection('files').findOneAndUpdate({"path": path}, {$set:{"reported": 1}});
+		doc.then(result => {
+			if (result.value.reported === 0) {
+				let sendmail = require('sendmail')();
+				let message = 'Yo nigga, you\'ve got a new report.<br>\
 				Check it out ====><a href="https://www.plus42.fr/' + path + '">Click here !</a><====';
 				sendmail({
 					from: 'admin@plus42.fr',
 					to: adminEmail,
 					subject: 'Plus42.fr: New report',
 					html: message
-				}, function(err, reply) {
+				}, (err, reply) => {
 					console.error(err && err.stack);
-					console.log(reply);
-				});
 
-				db.run("UPDATE uploads SET reported = 1 WHERE path = ?;", path);
+				});
 			}
 		});
 	}

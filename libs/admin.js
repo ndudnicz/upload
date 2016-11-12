@@ -4,58 +4,51 @@ class Admin {
 	constructor() {
 	}
 
-	static setToken(req, res, login) {
-		var sqlite3 = require('sqlite3');
-		var dbUsers = new sqlite3.Database('db/users.db');
-		var sess = req.session;
-		var md5 = require('md5');
-		var token = md5(new Date().getTime() + req.body.login);
+	static setToken(DB, req, res, login) {
+		const md5 = require('md5');
 
-		dbUsers.run("UPDATE users SET token = ? WHERE login = ?;",
-		[
-			token,
-			login
-		],
-		(err) => {
-			if (err) {
+		let sess = req.session
+			,token = md5(new Date().getTime() + login);
+
+		DB.collection('admin').updateOne(
+			{"_id": login},
+			{$set: {"token": token}},
+			(err, result) => {
+			if (err)
 				console.error(err);
-			}
-			else {
+			else
 				sess.token = token;
-			}
 			res.redirect('/admin');
 		});
 	}
 
-	static checkToken(req, res, data, callbackTrue, callbackFalse) {
-		var sqlite3 = require('sqlite3');
-		var dbUsers = new sqlite3.Database('db/users.db');
-		var sess = req.session;
+	static checkToken(DB, req, res, data, callbackTrue, callbackFalse) {
+		let sess = req.session;
 
 		if (!sess || !sess.token) {
 			callbackFalse(res);
 		}
 		else {
-			dbUsers.get("SELECT * FROM users WHERE token = ?;",
-			sess.token,
-			(err, row) => {
-				if (err || typeof row === 'undefined') {
+			DB.collection('admin').find({token: sess.token}).toArray((err, result) => {
+				if (err) {
 					callbackFalse(res);
 					return console.error(err);
 				}
-				else {
-					callbackTrue(res, data);
-				}
+				else if (result.length === 0)
+					callbackFalse(res);
+				else
+					callbackTrue(DB, res, data);
 			});
 		}
 	}
-
+/*
 	static changePassword(res, login, oldPass, newPass) {
-		var sqlite3 = require('sqlite3');
-		var dbUsers = new sqlite3.Database('db/users.db');
-		var bcrypt = require('bcrypt');
-		var salt = bcrypt.genSaltSync(10);
-		var newHash = bcrypt.hashSync(newPass, salt);
+		const sqlite3 = require('sqlite3')
+				,dbUsers = new sqlite3.Database('db/users.db')
+				,bcrypt = require('bcrypt');
+
+		let salt = bcrypt.genSaltSync(10)
+			,newHash = bcrypt.hashSync(newPass, salt);
 
 		dbUsers.get("SELECT * FROM users WHERE login = ?;", login, (err, row) => {
 			if (err || typeof row === 'undefined') {
@@ -64,25 +57,21 @@ class Admin {
 			}
 			else {
 				if (bcrypt.compareSync(oldPass, row.pass) === true) {
-					dbUsers.run("UPDATE users SET pass = ? WHERE login = ?;",
-					[
-						newHash,
-						login
-					],
-					(err) => {
-						if (err) {
+					dbUsers.run("UPDATE users SET pass = ? WHERE login = ?;"
+					,[newHash, login]
+					,(err) => {
+						if (err)
 							console.error(err)
-						}
 						res.redirect('/admin');
 					});
 				}
-				else {
+				else
 					res.redirect('/admin');
-				}
 			}
 		});
 		res.redirect('/admin');
 	}
+	*/
 }
 
 module.exports = Admin;

@@ -6,64 +6,66 @@
 	<link rel="stylesheet" type="text/css" href="css/index.min.css">
 </head>
 
+<div id="layer">
+<div id="wrapper">
+	<div id="container">
+		<% include partial/header.ejs %>
+		<% if (n < 500) { %>
+			<form action="/upload" method="post" encType="multipart/form-data">
+				<input type="file" name="file" id="file" style="visibility: hidden;" onchange="toto();">
+				<table>
+					<tr>
+						<td class="td-left-index">
+							<label id="label-file" for="file">
+								<span class="btn btn-select-file">
+									Select file
+								</span>
+							</label>
+						</td>
+						<td><span id="selectedFile">No file selected</span></td>
+					</tr>
+					<tr>
+						<td class="td-left-index" style="text-align: right;">www.plus42.fr/</td>
+						<td><input type="text" name="perso" placeholder="your-url" id="input-url" onkeyup="checkUrl();"></td>
+						<td id="td-checkurl">
+							<img id="checkurl" src="" width="25px" style="visibility: hidden;">
+						</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td><span style="font-size: 12px;">(3-50 char: a..zA..Z0..9-_)</span></td>
+					</tr>
+				</table>
+				<ul>
+					<li>10MB / file</li>
+					<li>24h. available</li>
+				</ul>
+				<input id="upload" class="btn" type="submit" value="Upload">
+			</form>
+			<% } else { %>
+				<p>FULL</p>
+				<% } %>
+				<% include partial/footer.ejs %>
+			</div>
+		</div>
+	</div>
 
-<% include partial/header.ejs %>
 
-<div id="container">
-<% if (n < 500) { %>
-<form action="/upload" method="post" encType="multipart/form-data">
-<input type="file" name="file" id="file" style="visibility: hidden;" onchange="toto();">
-	<table>
-		<tr>
-			<td class="td-left-index">
-				<label id="label-file" for="file">
-					<span class="btn btn-select-file">
-						Select file
-					</span>
-				</label>
-			</td>
-			<td><span id="selectedFile">No file selected</span></td>
-		</tr>
-		<tr>
-			<td class="td-left-index" style="text-align: right;">www.plus42.fr/</td>
-			<td><input type="text" name="perso" placeholder="your-url" id="input-url" onkeyup="checkUrl();"></td>
-			<td id="td-checkurl">
-				<img id="checkurl" src="" width="25px" style="visibility: hidden;">
-			</td>
-		</tr>
-		<tr>
-			<td></td>
-			<td><span style="font-size: 12px;">(3-50 char: a..zA..Z0..9-_)</span></td>
-		</tr>
-	</table>
-	<ul>
-		<li>10MB / file</li>
-		<li>24h. available</li>
-	</ul>
-	<input id="upload" class="btn" type="submit" value="Upload">
-</form>
-<% } else { %>
-	<p>FULL</p>
-<% } %>
-</div>
-
-<% include partial/footer.ejs %>
-
-<script>
-	function toto() {
-		var input = document.getElementById('file').value.split('\\');
-		var filename = input[input.length - 1];
-		document.getElementById('selectedFile').innerHTML = filename;
-	}
-	function checkUrl() {
-		var url = document.getElementById('input-url').value;
-		if (url.length >= 3) {
-			var req = new XMLHttpRequest();
-			req.open('POST', '/checkurl', true);
-			req.setRequestHeader("Content-type", "application/json;charset=UTF-8");
-			req.onreadystatechange = function (ret) {
-				if (req.readyState == 4) {
-					if(req.status == 200)
+		<script>
+		function toto() {
+			var input = document.getElementById('file').value.split('\\');
+			var filename = input[input.length - 1];
+			document.getElementById('selectedFile').innerHTML = filename;
+		}
+		function checkUrl() {
+			var url = document.getElementById('input-url').value;
+			if (url.length >= 3) {
+				var req = new XMLHttpRequest();
+				req.open('POST', '/checkurl', true);
+				req.setRequestHeader("Content-type", "application/json;charset=UTF-8");
+				req.onreadystatechange = function (ret) {
+					if (req.readyState == 4) {
+						if(req.status == 200)
 						if (req.responseText === 'true') {
 							document.getElementById('checkurl').src = 'images/true.png';
 							document.getElementById('checkurl').style.visibility = "visible";
@@ -72,12 +74,12 @@
 							document.getElementById('checkurl').src = 'images/false.png';
 							document.getElementById('checkurl').style.visibility = "visible";
 						}
-				}
-			};
-			req.send(JSON.stringify({ checkurl: url }));
+					}
+				};
+				req.send(JSON.stringify({ checkurl: url }));
+			}
+			else {
+				document.getElementById('checkurl').style.visibility = "hidden";
+			}
 		}
-		else {
-			document.getElementById('checkurl').style.visibility = "hidden";
-		}
-	}
-</script>
+		</script>

@@ -1,9 +1,18 @@
 body {
-	background-color: rgb(34, 34, 34);
-	color: white;
+	background-image: url(/images/background.png);
+	color: rgb(150, 150, 150);
 	font-family: sans-serif;
 	font-weight: lighter;
+	margin: 0px;
 	height: 90%;
+}
+
+#layer {
+	background-color: rgba(30, 30, 30, 0.666);
+	position: absolute;
+	margin: 0px;
+	width: 100%;
+	height: 100%;
 }
 
 header {
@@ -20,6 +29,18 @@ header {
 	margin-bottom: 40px;
 }
 
+#wrapper {
+	background-color: rgba(22, 22, 22, 1);
+	width: 500px;
+	padding: 40px;
+	margin: auto;
+	margin-top: 50px;
+	border-radius: 30px;
+	-moz-box-shadow: inset 0 0 1px 3px rgba(30, 30, 30, 0.5);
+	-webkit-box-shadow: inset 0 0 1px 3px rgba(30, 30, 30, 0.5);
+	box-shadow: inset 0 0 1px 3px rgba(30, 30, 30, 0.5);
+}
+
 #container {
 	margin: auto;
 }
@@ -32,23 +53,20 @@ header {
 	cursor: pointer;
 }
 
-#upload {
-	position: relative;
-	bottom: 10px;
-}
-
 ul {
 	width: 40%;
 	display: inline-block;
 }
 
+input {
+
+}
+
 .btn {
-  background: #a0a0a0;
-  -webkit-border-radius: 6;
-  -moz-border-radius: 6;
-  border-radius: 1px;
-  font-family: Arial;
-  color: #ffffff;
+  background: rgba(255, 0, 0, 0);;
+  font-family: 'Monofett', Arial;
+  /*color: #ffffff;*/
+	color: rgb(80, 80, 80);
   font-size: 36px;
   padding: 10px 20px 10px 20px;
   text-decoration: none;
@@ -61,13 +79,13 @@ ul {
 }
 
 .btn:hover {
-  background: #808080;
+  color: #404040;
   text-decoration: none;
   outline: none;
 }
 
 .btn-select-file {
-	font-size: 20px;
+	font-size: 30px;
 	width: 100%;
 	height: 100%;
 }
@@ -140,16 +158,10 @@ td {
 #message {
 	width: 100%;
 	max-width: 100%;
-	height: 230px;
+	height: 250px;
 	max-height: 250px;
 	font-size: 15px;
 	display: block;
-}
-
-#counter {
-	position: relative;
-	top: -163px;
-	font-size: 12px;
 }
 
 footer {
@@ -185,7 +197,7 @@ footer td {
 
 	#td-checkurl {
 		position: relative;
-		left: -17px;
+		left: 0px;
 	}
 
 	.btn {
@@ -198,12 +210,18 @@ footer td {
 	}
 
 	.btn-contact {
-		font-size: 20px;
+		font-size: 50px;
 		width: 100%;
 	}
 
 	#div-contact {
 		width: 75%;
+	}
+
+	#counter {
+		position: relative;
+		top: -190px;
+		font-size: 12px;
 	}
 }
 
@@ -211,6 +229,12 @@ footer td {
 	#container, footer {
 		width: 330px;
 		overflow: auto;
+	}
+
+	#wrapper {
+		width: 100%;
+		border-radius: 0px;
+		padding: 20px 0px 20px 0px;
 	}
 
 	.td-left-index {
@@ -226,11 +250,11 @@ footer td {
 
 	.btn-select-file {
 		padding: 5px 5px 5px 5px;
-		font-size: 20px;
+		font-size: 25px;
 	}
 
 	.btn-contact {
-		font-size: 22px;
+		font-size: 40px;
 		width: 100%;
 	}
 
@@ -249,10 +273,15 @@ footer td {
 
 	#td-checkurl {
 		position: relative;
-		left: -10px;
 	}
 
 	#div-contact {
 		width: 91%;
+	}
+
+	#counter {
+		position: relative;
+		top: -180px;
+		font-size: 12px;
 	}
 }
