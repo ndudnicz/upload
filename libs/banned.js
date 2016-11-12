@@ -50,9 +50,11 @@ class Banned {
 	static checkBanned(DB, req, res, data, callbackTrue, callbackFalse) {
 		DB.collection('banned').find({"ip": data['ip']}).toArray((err, result) => {
 			if (err) {
-				callbackFalse(res);
+				res.redirect('/');
 				console.error(err);
 			}
+			else if (result[0])
+				callbackFalse(res);
 			else callbackTrue(DB, req, res, data);
 		});
 	}

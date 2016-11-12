@@ -179,7 +179,7 @@ app.get('/', (req, res) => {
 	function callbackFalse(res) {
 		res.redirect('/');
 	}
-	Admin.checkToken(DB, req, res, data, callbackTrue, callbackFalse);
+	Admin.checkToken(DB, req, res, id, callbackTrue, callbackFalse);
 })
 .get('/delete/:id', (req, res) => {
 	let id = sanitize(req.params.id);
