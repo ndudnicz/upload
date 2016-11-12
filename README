@@ -1,18 +1,27 @@
 SETUP:
+- setup a mongodb server
 - npm install
 - mkdir files
-- mkdir db
 - you need a google account for the captcha keys
 - touch config.json:
 	{
 		"captchaPublicKey": ""
 		"captchaSecretKey": ""
-		,"adminLogin": ""
-		,"adminPassword": ""
 		,"adminEmail": ""
 		,"sessionSecret": ""
+		,"mongodbUser": ""
+		,"mongodbPwd": ""
+		,"mongodbURL": "mongodb://ip:port/"
+		,"mongodbDB": ""
 	}
+
+- touch config.setup.json:
+	{
+		"adminLogin": ""
+		,"adminPassword": ""
+	}
+
 - set a header 'x-real-ip' = 'remote ip' with your reverse proxy server nginx/apache
 - node setup.js
-- delete adminLogin and adminPassword values in config.json
+- npm test
 - node upload.js
