@@ -4,3 +4,4 @@ db/banned.db
 db/users.db
 node_modules/*
 config.json
+config.setup.json
