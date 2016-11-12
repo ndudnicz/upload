@@ -41,7 +41,7 @@ class Admin {
 			});
 		}
 	}
-
+/*
 	static changePassword(res, login, oldPass, newPass) {
 		const sqlite3 = require('sqlite3')
 				,dbUsers = new sqlite3.Database('db/users.db')
@@ -71,6 +71,7 @@ class Admin {
 		});
 		res.redirect('/admin');
 	}
+	*/
 }
 
 module.exports = Admin;

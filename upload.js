@@ -42,7 +42,7 @@ var DB
 Mongo.connect(url, (err, db) => {
 	assert.equal(null, err);
 	console.log(`Mongodb connected to ${config['mongodbURL']}${config['mongodbDB']}`);
-	DB= db;
+	DB = db;
 });
 
 app.use(bodyParser.json());
@@ -163,6 +163,7 @@ app.get('/', (req, res) => {
 			{"path": data},
 			{$set: {"reported": 0}},
 			(err, result) => {
+				if (err) console.error(err);
 				res.redirect('/admin');
 		});
 	}
@@ -206,7 +207,7 @@ app.get('/', (req, res) => {
 	var path = sanitize(req.params.id);
 	Files.report(DB, path, config["adminEmail"]);
 	res.render('report.ejs');
-})/*
+})
 .get('/contact', (req, res) => {
 	res.render('contact.ejs', { publicKey: config['captchaPublicKey'], message: "", error: null, success: null });
 })
@@ -219,6 +220,8 @@ app.get('/', (req, res) => {
 		remoteip = req.headers['x-real-ip'],
 		url = 'https://www.google.com/recaptcha/api/siteverify',
 		verifyUrl = url+'?secret='+secret+'&response='+captchaResponse+'&remoteip='+remoteip;
+
+		// Protect against code injection
 		htmlspecialchars = require('htmlspecialchars');
 		request(verifyUrl, (error, resonse, body) => {
 			body = JSON.parse(body);
@@ -243,14 +246,15 @@ app.get('/', (req, res) => {
 		});
 	}
 	else {
-		if (regMail.test(req.body.email) === false) {
-			res.render('contact.ejs', { publicKey: config['captchaPublicKey'], message: req.body.message.substr(0, 1000), error: "Invalid email.", success: null });
-		}
-		else {
-			res.render('contact.ejs', { publicKey: config['captchaPublicKey'], message: req.body.message.substr(0, 1000), error: "Invalid message.", success: null });
-		}
+			res.render('contact.ejs',
+			{
+				publicKey: config['captchaPublicKey'],
+				message: req.body.message.substr(0, 1000),
+				error: (regMail.test(req.body.email) === false) ? "Invalid email." : "Invalid message.",
+				success: null
+			});
 	}
-})*/
+})
 .get('/:id', (req, res) => {
 	var path = sanitize(req.params.id);
 	DB.collection('files').find({"path": path}).toArray((err, result) => {

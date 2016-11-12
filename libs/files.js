@@ -6,7 +6,10 @@ class Files {
 	}
 
 	static all(DB) {
-		DB.collection('files').find().toArray((err, result) => {console.log(result);})
+		DB.collection('files').find({}),toArray((err, result)=>{
+			if (err) console.error(err);
+			console.log(result);
+		});
 	}
 
 	static add(DB, path, filename, ip, res, req) {
@@ -87,18 +90,7 @@ class Files {
 				});
 			}
 		});
-		/*
-		db.get("SELECT * FROM uploads WHERE path = ? AND reported = 0;", path, (err, row) => {
-		if (err)
-		console.error(err);
-		else if (typeof row !== 'undefined') {
-		console.log(reply);
-	});
-
-	db.run("UPDATE uploads SET reported = 1 WHERE path = ?;", path);
-}
-});*/
-}
+	}
 }
 
 module.exports = Files;

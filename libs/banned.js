@@ -1,21 +1,17 @@
 "use strict";
 
 class Banned {
+
 	constructor() {
 	}
 
-	static all() {
-		const sqlite3 = require('sqlite3')
-				,dbBanned = new sqlite3.Database('db/banned.db');
-
-		dbBanned.all("SELECT * FROM banned;", (err, row) => {
-			if (err)
-				console.error(err);
-			else if (typeof row !== 'undefined')
-				console.log(row);
+	static all(DB) {
+		DB.collection('banned').find({}),toArray((err, result)=>{
+			if (err) console.error(err);
+			console.log(result);
 		});
 	}
-
+/*
 	static add(ip) {
 		const sqlite3 = require('sqlite3')
 				,dbBanned = new sqlite3.Database('db/banned.db');
@@ -27,7 +23,7 @@ class Banned {
 				console.error(err);
 		});
 	}
-
+*/
 	static addFromPath(DB, path, res, redir) {
 		let timestamp = new Date().getTime();
 
@@ -60,18 +56,6 @@ class Banned {
 			else callbackTrue(DB, req, res, data);
 		});
 	}
-/*
-		dbBanned.get("SELECT * FROM banned WHERE ip = ?;", data['ip'], (err, row) => {
-			if (err) {
-				callbackFalse(res)
-				return console.error(err);
-			}
-			else if (typeof row === 'undefined')
-				callbackTrue(DB, res, data);
-			else
-				callbackFalse(res)
-		});
-	}*/
 }
 
 module.exports = Banned;
