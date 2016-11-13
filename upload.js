@@ -149,17 +149,17 @@ app.get('/', (req, res) => {
 
 	DB.collection('admin').find({"_id": login}).toArray((err, result) => {
 		if (err) {
-			res.redirect('/admin');
+			res.send("Error database");
 			return console.error(err);
 		}
 		else if (result.length === 0)
-			res.redirect('/admin');
+			res.sendStatus(403);
 		else {
 			console.log(bcrypt.compareSync(req.body.password, result[0]["pwd"]));
 			if (bcrypt.compareSync(req.body.password, result[0]["pwd"]) === true)
 				Admin.setToken(DB, req, res, login);
 			else
-				res.redirect('/admin');
+				res.sendStatus(403);
 		}
 	});
 })
