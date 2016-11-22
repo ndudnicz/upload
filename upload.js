@@ -34,6 +34,7 @@ const express = require('express')
 	,'unban'
 	,'contact'
 	,'api'
+	,'ping'
 ]
 ,config = JSON.parse(fs.readFileSync('./config.json'));
 
