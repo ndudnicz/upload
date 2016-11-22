@@ -33,6 +33,7 @@ const express = require('express')
 	,'download'
 	,'unban'
 	,'contact'
+	,'api'
 ]
 ,config = JSON.parse(fs.readFileSync('./config.json'));
 
