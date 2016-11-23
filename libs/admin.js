@@ -29,12 +29,12 @@ class Admin {
 			callbackFalse(res);
 		}
 		else {
-			DB.collection('admin').find({token: sess.token}).toArray((err, result) => {
+			DB.collection('admin').findOne({token: sess.token}, (err, result) => {
 				if (err) {
 					callbackFalse(res);
 					return console.error(err);
 				}
-				else if (result.length === 0)
+				else if (!result)
 					callbackFalse(res);
 				else
 					callbackTrue(DB, res, data);

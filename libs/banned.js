@@ -27,12 +27,19 @@ class Banned {
 	static addFromPath(DB, path, res, redir) {
 		let timestamp = new Date().getTime();
 
-		DB.collection('files').find({"path": path}).toArray((err, result) => {
+		DB.collection('files').findOne({"path": path}, (err, result) => {
 			if (err || result.length === 0)
 				return console.error(err);
 			else {
-				DB.collection('banned').insertOne({"ip": result[0]["ip"], "timestamp": timestamp},
-					(err, result) => {
+				DB.collection('banned').findAndModify({
+					query: {"ip": result["ip"]},
+					update: {
+						$setOnInsert: {"ip": result["ip"], "timestamp": timestamp}
+					},
+					new: true,
+					upsert: true
+				},(err, result) => {
+						console.log(result);
 						require('./files.js').del(DB, path, res, redir);
 						if (err) console.error(err);
 				});
@@ -42,19 +49,17 @@ class Banned {
 
 	static unban(DB, ip) {
 		DB.collection('banned').deleteOne({"ip": ip}, (err, result) => {
-			if (err)
-				console.error(err);
+			if (err) console.error(err);
 		});
 	}
 
 	static checkBanned(DB, req, res, data, callbackTrue, callbackFalse) {
-		DB.collection('banned').find({"ip": data['ip']}).toArray((err, result) => {
+		DB.collection('banned').findOne({"ip": data['ip']}, (err, result) => {
 			if (err) {
 				res.redirect('/');
 				console.error(err);
 			}
-			else if (result[0])
-				callbackFalse(res);
+			else if (result) callbackFalse(res);
 			else callbackTrue(DB, req, res, data);
 		});
 	}
