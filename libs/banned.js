@@ -28,10 +28,12 @@ class Banned {
 		let timestamp = new Date().getTime();
 
 		DB.collection('files').findOne({"path": path}, (err, result) => {
-			if (err)
-				return console.error(err);
-			else if (!result) {
+			if (err || !result) {
+				if (err) console.error(err);
 				res.redirect('/admin');
+			}
+			else if (result["ip"] === null) {
+				require('./files.js').del(DB, path, res, redir);
 			}
 			else {
 				DB.collection('banned').findAndModify(
@@ -42,7 +44,6 @@ class Banned {
 					},
 					{upsert: true}
 				,(err, result) => {
-						console.log(result);
 						require('./files.js').del(DB, path, res, redir);
 						if (err) console.error(err);
 				});
