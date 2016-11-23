@@ -28,17 +28,20 @@ class Banned {
 		let timestamp = new Date().getTime();
 
 		DB.collection('files').findOne({"path": path}, (err, result) => {
-			if (err || result.length === 0)
+			if (err)
 				return console.error(err);
+			else if (!result) {
+				res.redirect('/admin');
+			}
 			else {
-				DB.collection('banned').findAndModify({
-					query: {"ip": result["ip"]},
-					update: {
-						$setOnInsert: {"ip": result["ip"], "timestamp": timestamp}
+				DB.collection('banned').findAndModify(
+					{"ip": result["ip"]},
+					[],
+					{
+						$set: {"ip": result["ip"], "timestamp": timestamp}
 					},
-					new: true,
-					upsert: true
-				},(err, result) => {
+					{upsert: true}
+				,(err, result) => {
 						console.log(result);
 						require('./files.js').del(DB, path, res, redir);
 						if (err) console.error(err);
