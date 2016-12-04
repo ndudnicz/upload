@@ -9,9 +9,10 @@
 
 <div id="layer">
 <div id="wrapper">
-<div id="container">
+<div id="container" style="text-align: center;">
 <% include partial/header.ejs %>
 	<form action="/contact" method="post" encType="application/x-www-form-urlencoded">
+			<p>no html. no script. no bullshit. thx. bye.</p>
 		<div id="div-contact">
 			<% if (error) { %>
 				<p style="color: tomato;"><%= error %></p>
@@ -22,8 +23,8 @@
 			<input id="email" type="email" name="email" placeholder="Email">
 			<textarea id="message" name="message" maxlength="1000" onkeyup="counter(this);" placeholder="Message"><%= message %></textarea>
 			<div data-theme="dark" class="g-recaptcha" data-sitekey="<%= publicKey %>" data-size="normal"></div>
+			<p><a href="/pgp" target="_blank" style="text-decoration: underline; color: inherit;">PGP</a></p>
 			<input class="btn btn-contact" type="submit" value="Send">
-			<p>no html. no script. no bullshit. thx. bye.</p>
 			<span id="counter">1000</span>
 		</div>
 	</form>

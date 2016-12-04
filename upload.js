@@ -35,6 +35,7 @@ const express = require('express')
 	,'contact'
 	,'api'
 	,'ping'
+	,'pgp'
 ]
 ,config = JSON.parse(fs.readFileSync('./config.json'));
 
@@ -130,6 +131,10 @@ app.get('/', (req, res) => {
 		Banned.checkBanned(DB, req, res, data, callbackTrue, callbackFalse);
 	else
 		res.redirect('/');
+})
+.get('/pgp', (req, res) => {
+	res.setHeader('Content-type', 'text/plain')
+	res.send(fs.readFileSync('./pgp/public.gpg', 'utf-8'))
 })
 .get('/admin', (req, res) => {
 	function callbackTrue(DB, res, data) {
