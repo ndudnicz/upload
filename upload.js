@@ -245,7 +245,7 @@ app.get('/', (req, res) => {
 				mailContent = 'New message from: ' + req.body.email + ' [' + req.headers['x-real-ip'] + ']<br/><br/>' + htmlspecialchars(req.body.message),
 				sendmail = require('sendmail')();
 				sendmail({
-					from: 'admin@plus42.fr'
+					from: 'admin@uploadme.cc'
 					,subject: mailSubject
 					,to:config['adminEmail']
 					,html: mailContent

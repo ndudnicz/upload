@@ -78,11 +78,11 @@ class Files {
 			if (result.value.reported === 0) {
 				let sendmail = require('sendmail')();
 				let message = 'Yo nigga, you\'ve got a new report.<br>\
-				Check it out ====><a href="https://www.plus42.fr/' + path + '">Click here !</a><====';
+				Check it out ====><a href="https://www.uploadme.cc/' + path + '">Click here !</a><====';
 				sendmail({
-					from: 'admin@plus42.fr',
+					from: 'admin@uploadme.cc',
 					to: adminEmail,
-					subject: 'Plus42.fr: New report',
+					subject: 'Uploadme.cc: New report',
 					html: message
 				}, (err, reply) => {
 					console.error(err && err.stack);
