@@ -228,7 +228,7 @@ app.get('/', (req, res) => {
 })
 .post('/contact', (req, res) => {
 	var regMail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-	if (regMail.test(req.body.email) === true && req.body.message.length > 0 && req.body.message.length <= 1000) {
+	if (regMail.test(req.body.email) === true && req.body.message.length > 0 && req.body.message.length <= 15000) {
 		var request = require('request'),
 		secret = config['captchaSecretKey'],
 		captchaResponse = req.body['g-recaptcha-response'],
@@ -241,7 +241,7 @@ app.get('/', (req, res) => {
 		request(verifyUrl, (error, resonse, body) => {
 			body = JSON.parse(body);
 			if (body.success === true) {
-				var mailSubject = 'Plus42.fr: new message.',
+				var mailSubject = 'Uploadme.cc: new message.',
 				mailContent = 'New message from: ' + req.body.email + ' [' + req.headers['x-real-ip'] + ']<br/><br/>' + htmlspecialchars(req.body.message),
 				sendmail = require('sendmail')();
 				sendmail({

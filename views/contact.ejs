@@ -21,11 +21,11 @@
 				<p style="color: lightgreen;"><%= success %></p>
 			<% } %>
 			<input id="email" type="email" name="email" placeholder="Email">
-			<textarea id="message" name="message" maxlength="1000" onkeyup="counter(this);" placeholder="Message"><%= message %></textarea>
+			<textarea id="message" name="message" maxlength="15000" onkeyup="counter(this);" placeholder="Message"><%= message %></textarea>
 			<div data-theme="dark" class="g-recaptcha" data-sitekey="<%= publicKey %>" data-size="normal"></div>
 			<p><a href="/pgp" target="_blank" style="text-decoration: underline; color: inherit;">PGP</a></p>
 			<input class="btn btn-contact" type="submit" value="Send">
-			<span id="counter">1000</span>
+			<span id="counter">15000</span>
 		</div>
 	</form>
 </div>
@@ -34,6 +34,6 @@
 
 <script>
 	function counter(text) {
-		document.getElementById('counter').innerHTML = 1000 - text.value.length;
+		document.getElementById('counter').innerHTML = 15000 - text.value.length;
 	}
 </script>
