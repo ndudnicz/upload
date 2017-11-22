@@ -29,11 +29,12 @@ header {
 }
 
 #wrapper {
-	width: 500px;
-	padding: 40px;
-	margin: auto;
-	margin-top: 50px;
-	border-radius: 30px;
+  background-color: rgba(22, 22, 22, 0.5);
+  width: 500px;
+  padding: 40px;
+  margin: auto;
+  margin-top: 50px;
+  border-radius: 30px;
 }
 
 #container {
